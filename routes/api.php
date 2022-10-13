@@ -24,4 +24,4 @@ Route::middleware('auth:sanctum')->get('/test-auth', function (Request $request)
 });
 
 Route::post("/login", [AuthenticatedSessionController::class, 'store']);
-Route::post("/logout", [AuthenticatedSessionController::class, 'destroy']);
+Route::middleware("auth:sanctum")->post("/logout", [AuthenticatedSessionController::class, 'destroy']);
