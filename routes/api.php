@@ -15,13 +15,16 @@ use App\Http\Controllers\Auth\AuthenticatedSessionController;
 |
 */
 
-Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
-    return $request->user();
-});
-
-Route::middleware('auth:sanctum')->get('/test-auth', function (Request $request) {
-    return "Congrats! You are authorized!";
-});
-
 Route::post("/login", [AuthenticatedSessionController::class, 'store']);
-Route::middleware("auth:sanctum")->post("/logout", [AuthenticatedSessionController::class, 'destroy']);
+
+Route::middleware('auth:sanctum')->group(function () {
+    Route::get('/user', function (Request $request) {
+        return $request->user();
+    });
+
+    Route::get('/test-auth', function (Request $request) {
+        return "Congrats! You are authorized!";
+    });
+
+    Route::post("/logout", [AuthenticatedSessionController::class, 'destroy']);
+});
