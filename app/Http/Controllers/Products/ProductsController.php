@@ -12,10 +12,10 @@ class ProductsController extends Controller
 {
     public static function new(Request $request) {
         $request->validate([
-            "images" => "required|image|mimes:jpeg,jpg,png",
+            "images" => "required|image|mimes:jpeg,jpg,png|max:2024",
             "catagory" => "required|max:64",
             "name" => "required|unique:products|max:64",
-            "description" => "max:255",
+            "description" => "required|max:255",
             "price" => "required",
         ]);
 
@@ -23,15 +23,9 @@ class ProductsController extends Controller
         $description = $request->description;
         $price = $request->price;
 
-        $sku = $request->sku;
+        $sku = Product::generateSKU($name);
         $catagory = $request->catagory;
 
-        /** TODO:
-         *  Add image upload(s) for product
-         */
-
-        // $images = $request->images; 
-        
         return [
             "images" => "Not implemented.",
             "catagory" => $catagory,
