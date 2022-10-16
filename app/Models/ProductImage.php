@@ -10,11 +10,17 @@ class ProductImage extends Model
 {
     use HasFactory;
 
+    public $timestamps = false;
+
     protected $fillable = [
-        "url",
+        "image_name",
     ];
 
     public function product() {
         return $this->belongsTo(Product::class);
+    }
+
+    private function url() {
+        return "/product_images/" . $this->name;
     }
 }

@@ -24,20 +24,42 @@ class ProductsController extends Controller
         $name = $request->name;
         $description = $request->description;
         $price = $request->price;
-
         $sku = Product::generateSKU($name);
         $catagory = $request->catagory;
 
-        $uploadedImages = self::uploadImagesFromRequest($request, "images", "product_images");
+
+        $product = new Product([
+            "name" => $name,
+            "description" => $description,
+            "price" => $price,
+            "sku" => Product::generateSKU($name),
+            "catagory" => $catagory,
+        ]);
+
+        $product->save(); // Product must be saved before saving images to it.
+        
+        $uploadedImageNames = self::uploadImagesFromRequest($request, "images", "product_images");
+        self::saveImagesToProduct($product, $uploadedImageNames);
+        
 
         return [
-            "images" => $uploadedImages,
+            "images" => $uploadedImageNames,
             "catagory" => $catagory,
             "name" => $name,
             "description" => $description,
             "price" => $price,
             "sku" => $sku,
         ];
+    }
+
+    private static function saveImagesToProduct($product, $imageNames) {
+        foreach ($imageNames as $imageName) {
+            $productImage = new ProductImage([
+                "image_name" => $imageName
+            ]);
+
+            $product->images()->save($productImage);
+        }
     }
 
     private static function uploadImagesFromRequest($request, $fieldName, $outputDir) {
