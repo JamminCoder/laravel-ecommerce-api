@@ -16,8 +16,9 @@ return new class extends Migration
     {
         Schema::create('product_images', function (Blueprint $table) {
             $table->id();
-            $table->string("url");
+            $table->string("image_name");
             $table->foreignIdFor(Product::class);
+            $table->comment("Images are accessed with `/product_images/{image_name}`");
         });
     }
 
