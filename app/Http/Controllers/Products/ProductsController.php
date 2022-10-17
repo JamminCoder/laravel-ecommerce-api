@@ -63,7 +63,7 @@ class ProductsController extends Controller
     }
 
     private static function uploadImagesFromRequest($request, $fieldName, $outputDir) {
-        // Upload code from by https://stackoverflow.com/a/42643349
+        // Upload code from https://stackoverflow.com/a/42643349
         
         $images = array();
         if($files = $request->file($fieldName)) {
