@@ -38,7 +38,7 @@ class ProductsController extends Controller
 
         $product->save(); // Product must be saved before saving images to it.
         
-        $uploadedImageNames = self::uploadImagesFromRequest($request, "images", "product_images");
+        $uploadedImageNames = self::uploadFilesFromRequest($request, "images", "product_images");
         self::saveImagesToProduct($product, $uploadedImageNames);
         
 
@@ -62,18 +62,18 @@ class ProductsController extends Controller
         }
     }
 
-    private static function uploadImagesFromRequest($request, $fieldName, $outputDir) {
+    private static function uploadFilesFromRequest($request, $fieldName, $outputDir) {
         // Upload code from https://stackoverflow.com/a/42643349
         
-        $images = array();
+        $uploads = array();
         if($files = $request->file($fieldName)) {
             foreach($files as $file){
                 $name = Str::random();
                 $file->move($outputDir, $name);
-                $images[] = $name;
+                $uploads[] = $name;
             }
         }
 
-        return $images;
+        return $uploads;
     }
 }
