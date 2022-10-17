@@ -52,6 +52,10 @@ class ProductsController extends Controller
         ];
     }
 
+    public static function all() {
+        return Product::allWithImageNames();
+    }
+
     private static function saveImagesToProduct($product, $imageNames) {
         foreach ($imageNames as $imageName) {
             $productImage = new ProductImage([

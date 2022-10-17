@@ -34,3 +34,5 @@ Route::middleware('auth:sanctum')->group(function () {
     // Product creation
     Route::post("/products/new", [ProductsController::class, "new"]);
 });
+
+Route::get("/products/all", [ProductsController::class, "all"]);

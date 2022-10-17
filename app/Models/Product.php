@@ -23,6 +23,28 @@ class Product extends Model
         return $this->hasMany(ProductImage::class);
     }
 
+    public function imageNames() {
+        $images = $this->images()->get();
+        $image_names = array();
+        foreach ($images as $img) {
+            array_push($image_names, $img->image_name);
+        }
+
+        return $image_names;
+    }
+
+    public static function allWithImageNames() {
+        $products = Product::all();
+        $products_with_images = array();
+
+        foreach ($products as $product) {
+            $product["images"] = $product->imageNames();
+            array_push($products_with_images, $product);
+        }
+
+        return $products_with_images;
+    }
+
     public static function generateSKU($productName) {
         // separate by spaces
         $exploded = explode(" ", $productName);
