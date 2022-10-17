@@ -33,6 +33,8 @@ Route::middleware('auth:sanctum')->group(function () {
 
     // Product creation
     Route::post("/products/new", [ProductsController::class, "new"]);
+
+    Route::post("/products/delete/sku/{sku}", [ProductsController::class, "delete"]);
 });
 
 Route::get("/products/all", [ProductsController::class, "all"]);

@@ -35,6 +35,9 @@ class Product extends Model
 
     public static function allWithImageNames() {
         $products = Product::all();
+
+        if (!count($products) >= 1) return "No products";
+        
         $products_with_images = array();
 
         foreach ($products as $product) {
