@@ -19,12 +19,12 @@ class Product extends Model
         "sku",
     ];
 
-    public function images() {
+    public function ownImages() {
         return $this->hasMany(ProductImage::class);
     }
 
     public function imageNames() {
-        $images = $this->images()->get();
+        $images = $this->ownImages()->get();
         $image_names = array();
         foreach ($images as $img) {
             array_push($image_names, $img->image_name);
