@@ -97,7 +97,7 @@ class ProductsController extends Controller
                 "image_name" => $imageName
             ]);
 
-            $product->images()->save($productImage);
+            $product->ownImages()->save($productImage);
         }
     }
 
