@@ -38,3 +38,5 @@ Route::middleware('auth:sanctum')->group(function () {
 });
 
 Route::get("/products/all", [ProductsController::class, "all"]);
+Route::get("/products/sku/{sku}", [ProductsController::class, "getBySKU"]);
+

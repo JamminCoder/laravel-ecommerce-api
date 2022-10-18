@@ -83,6 +83,14 @@ class ProductsController extends Controller
         
     }
 
+    public static function getBySKU(Request $request) {
+        $sku = $request->sku;
+        $result = Product::where("sku", $sku)->get();
+        if (count($result) === 0) return null;
+        $product = $result[0];
+        return $product->withImages();
+    }
+
     private static function saveImagesToProduct($product, $imageNames) {
         foreach ($imageNames as $imageName) {
             $productImage = new ProductImage([

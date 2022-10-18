@@ -33,6 +33,11 @@ class Product extends Model
         return $image_names;
     }
 
+    public function withImages() {
+        $this->images = $this->imageNames();
+        return $this;
+    }
+
     public static function allWithImageNames() {
         $products = Product::all();
 
