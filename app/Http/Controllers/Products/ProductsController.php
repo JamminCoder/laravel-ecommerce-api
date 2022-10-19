@@ -8,6 +8,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Product;
 use App\Models\ProductImage;
 use App\Http\Controllers\FilesController;
+use App\Models\Catagory;
 
 class ProductsController extends Controller
 {
@@ -25,7 +26,7 @@ class ProductsController extends Controller
         $description = $request->description;
         $price = $request->price;
         $sku = Product::generateSKU($name);
-        $catagory = $request->catagory;
+        $catagoryName = $request->catagory;
 
 
         $product = new Product([
@@ -33,18 +34,28 @@ class ProductsController extends Controller
             "description" => $description,
             "price" => $price,
             "sku" => Product::generateSKU($name),
-            "catagory" => $catagory,
         ]);
 
-        $product->save(); // Product must be saved before saving images to it.
+        $catResult = Catagory::where("catagory", $catagoryName)->get();
+        if (count($catResult) >= 1) {
+            $catagory = $catResult[0];
+            $catagory->products()->save($product);
+
+        } else {
+            $catagory = new Catagory([
+                "catagory" => $catagoryName,
+            ]);
+
+            $catagory->products()->save($product);
+            $catagory->save();
+        }
         
         $uploadedImageNames = FilesController::uploadFilesFromRequest($request, "images", "product_images");
         self::saveImagesToProduct($product, $uploadedImageNames);
         
-
         return [
-            "images" => $uploadedImageNames,
-            "catagory" => $catagory,
+            // "images" => $uploadedImageNames,
+            // "catagory" => $catagory,
             "name" => $name,
             "description" => $description,
             "price" => $price,

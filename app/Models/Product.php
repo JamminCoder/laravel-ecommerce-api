@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use App\Models\ProductImage;
+use App\Models\Catagory;
 use Carbon\Carbon;
 
 class Product extends Model
@@ -21,6 +22,10 @@ class Product extends Model
 
     public function ownImages() {
         return $this->hasMany(ProductImage::class);
+    }
+
+    public function catagory() {
+        return $this->belongsTo(Catagory::class);
     }
 
     public function deleteImages() {
