@@ -25,13 +25,8 @@ class Product extends Model
     }
 
     public function delete() {
-        // Delete the images from the file system
         $images = $this->ownImages()->get();
-        foreach ($images as $img) {
-            FilesController::delete($img->url());
-        }
-        
-        ProductImage::where("product_id", $this->id)->delete();
+        foreach ($images as $img) $img->delete();
 
         return parent::delete();
     }

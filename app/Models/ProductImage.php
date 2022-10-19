@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use App\Models\Product;
+use App\Http\Controllers\FilesController;
 
 class ProductImage extends Model
 {
@@ -22,5 +23,10 @@ class ProductImage extends Model
 
     public function url() {
         return public_path("/product_images/" . $this->image_name);
+    }
+
+    public function delete() {
+        FilesController::delete($this->url());
+        return parent::delete();
     }
 }
