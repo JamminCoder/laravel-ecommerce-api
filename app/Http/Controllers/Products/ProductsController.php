@@ -54,8 +54,7 @@ class ProductsController extends Controller
         self::saveImagesToProduct($product, $uploadedImageNames);
         
         return [
-            // "images" => $uploadedImageNames,
-            // "catagory" => $catagory,
+            "images" => $uploadedImageNames,
             "name" => $name,
             "description" => $description,
             "price" => $price,
@@ -67,18 +66,14 @@ class ProductsController extends Controller
         $request->validate([
             "images.*" => "image|mimes:png,jpg,jpeg",
             "images.*files" => "image|mimes:png,jpg,jpeg",
-            "catagory" => "required|max:64",
-            "name" => "required|max:64",
-            "description" => "required|max:255",
-            "price" => "required",
+            "catagory" => "max:64",
+            "name" => "max:64",
+            "description" => "max:255",
             "sku" => "required"
         ]);
 
         $product = Product::getBySKU($request->sku);
         if (!$product) return "Product does not exist";
-
-        if (isset($request->catagory)) 
-            $product->catagory = $request->catagory;
 
         if (isset($request->description)) 
             $product->description = $request->description;
@@ -94,6 +89,23 @@ class ProductsController extends Controller
             $product->deleteImages();
             $uploadedImageNames = FilesController::uploadFilesFromRequest($request, "images", "product_images");
             self::saveImagesToProduct($product, $uploadedImageNames);
+        }
+        
+        if (isset($request->catagory)) {
+            $catResult = Catagory::where("catagory", $request->catagory)->get();
+            if (count($catResult) >= 1) {
+                $catagory = $catResult[0];
+                $catagory->products()->save($product);
+    
+            } else {
+                $catagory = new Catagory([
+                    "catagory" => $request->catagory,
+                ]);
+    
+                $catagory->save();
+                $product->catagory_id = $catagory->id;
+            
+            }
         }
         
         $product->save();
