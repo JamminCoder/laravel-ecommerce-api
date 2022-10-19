@@ -90,18 +90,16 @@ class ProductsController extends Controller
     }
 
     public static function delete(Request $request) {
-        $request->validate(["sku" => "required"]);
+        if (!isset($request->sku)) 
+            return "Please provide the SKU at the end of the URL: /api/products/delete/sku/{SKU}";
         
         $product = Product::getBySKU($request->sku);
         
         // Delete the images from the file system
         $images = $product->imageNames();
         foreach ($images as $img) {
-            $file_path = public_path("product_images/$img");
-            if (file_exists($file_path)) {
-                error_log("Deleting file $file_path");
-                unlink($file_path);
-            }
+            $file_path = "product_images/$img";
+            FilesController::delete($file_path);
         }
         
         ProductImage::where("product_id", $product->id)->delete();
@@ -112,7 +110,11 @@ class ProductsController extends Controller
     }
 
     public static function getBySKU(Request $request) {
+        if (!isset($request->sku)) 
+            return "Please provide the SKU at the end of the URL: /api/products/sku/{SKU}";
+        
         $sku = $request->sku;
+        
         $result = Product::where("sku", $sku)->get();
         if (count($result) === 0) return null;
         $product = $result[0];

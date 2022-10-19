@@ -21,4 +21,11 @@ class FilesController extends Controller
 
         return $uploads;
     }
+
+    public static function delete($path) {
+        $public_path = public_path($path);
+        if (file_exists($public_path)) {
+            unlink($public_path);
+        }
+    }
 }
