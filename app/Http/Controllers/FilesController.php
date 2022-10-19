@@ -23,9 +23,8 @@ class FilesController extends Controller
     }
 
     public static function delete($path) {
-        $public_path = public_path($path);
-        if (file_exists($public_path)) {
-            unlink($public_path);
+        if (file_exists($path)) {
+            unlink($path);
         }
     }
 }

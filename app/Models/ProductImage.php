@@ -20,7 +20,7 @@ class ProductImage extends Model
         return $this->belongsTo(Product::class);
     }
 
-    private function url() {
-        return public_path("/product_images/" . $this->name);
+    public function url() {
+        return public_path("/product_images/" . $this->image_name);
     }
 }

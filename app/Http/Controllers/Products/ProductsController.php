@@ -94,15 +94,6 @@ class ProductsController extends Controller
             return "Please provide the SKU at the end of the URL: /api/products/delete/sku/{SKU}";
         
         $product = Product::getBySKU($request->sku);
-        
-        // Delete the images from the file system
-        $images = $product->imageNames();
-        foreach ($images as $img) {
-            $file_path = "product_images/$img";
-            FilesController::delete($file_path);
-        }
-        
-        ProductImage::where("product_id", $product->id)->delete();
         $product->delete();
 
         return "OK";

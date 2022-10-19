@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use App\Models\ProductImage;
 use Carbon\Carbon;
+use App\Http\Controllers\FilesController;
 
 class Product extends Model
 {
@@ -21,6 +22,18 @@ class Product extends Model
 
     public function ownImages() {
         return $this->hasMany(ProductImage::class);
+    }
+
+    public function delete() {
+        // Delete the images from the file system
+        $images = $this->ownImages()->get();
+        foreach ($images as $img) {
+            FilesController::delete($img->url());
+        }
+        
+        ProductImage::where("product_id", $this->id)->delete();
+
+        return parent::delete();
     }
 
     public function imageNames() {
