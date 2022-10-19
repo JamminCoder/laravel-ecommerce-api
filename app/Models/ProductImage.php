@@ -21,6 +21,6 @@ class ProductImage extends Model
     }
 
     private function url() {
-        return "/product_images/" . $this->name;
+        return public_path("/product_images/" . $this->name);
     }
 }
