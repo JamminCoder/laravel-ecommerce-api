@@ -23,10 +23,13 @@ class Product extends Model
         return $this->hasMany(ProductImage::class);
     }
 
-    public function delete() {
+    public function deleteImages() {
         $images = $this->ownImages()->get();
         foreach ($images as $img) $img->delete();
+    }
 
+    public function delete() {
+        $this->deleteImages();
         return parent::delete();
     }
 

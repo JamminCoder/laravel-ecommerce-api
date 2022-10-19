@@ -79,7 +79,12 @@ class ProductsController extends Controller
             $product->price = $request->price;
         
 
-
+        if (isset($request->images)) {
+            $product->deleteImages();
+            $uploadedImageNames = FilesController::uploadFilesFromRequest($request, "images", "product_images");
+            self::saveImagesToProduct($product, $uploadedImageNames);
+        }
+        
         $product->save();
 
         return "Updated product";
