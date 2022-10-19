@@ -52,6 +52,39 @@ class ProductsController extends Controller
         ];
     }
 
+    public static function update(Request $request) {
+        $request->validate([
+            "images.*" => "image|mimes:png,jpg,jpeg",
+            "images.*files" => "image|mimes:png,jpg,jpeg",
+            "catagory" => "required|max:64",
+            "name" => "required|max:64",
+            "description" => "required|max:255",
+            "price" => "required",
+            "sku" => "required"
+        ]);
+
+        $product = Product::getBySKU($request->sku);
+        if (!$product) return "Product does not exist";
+
+        if (isset($request->catagory)) 
+            $product->catagory = $request->catagory;
+
+        if (isset($request->description)) 
+            $product->description = $request->description;
+
+        if (isset($request->name))
+            $product->name = $request->name;
+        
+        if (isset($request->price))
+            $product->price = $request->price;
+        
+
+
+        $product->save();
+
+        return "Updated product";
+    }
+
     public static function all() {
         return Product::allWithImageNames();
     }
