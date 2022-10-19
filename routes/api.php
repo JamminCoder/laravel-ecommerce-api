@@ -31,8 +31,9 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::post("/logout", [AuthenticatedSessionController::class, 'destroy']);
 
 
-    // Product creation
+    // Product management
     Route::post("/products/new", [ProductsController::class, "new"]);
+    Route::post("/products/update", [ProductsController::class, "update"]);
 
     Route::post("/products/delete/sku/{sku}", [ProductsController::class, "delete"]);
 });
