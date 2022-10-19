@@ -17,10 +17,12 @@ return new class extends Migration
         Schema::create('catagories', function (Blueprint $table) {
             $table->id();
             $table->string("catagory");
+            
         });
 
         Schema::table("products", function (Blueprint $table) {
-            $table->foreignIdFor(Catagory::class);
+            $table->foreignIdFor(Catagory::class)->nullable();
+            $table->dropColumn("catagory");
         });
     }
 
@@ -34,6 +36,7 @@ return new class extends Migration
         Schema::dropIfExists('catagories');
         Schema::table("products", function (Blueprint $table) {
             $table->dropColumn("catagory_id");
+            $table->string("catagory");
         });
     }
 };
