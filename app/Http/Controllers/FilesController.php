@@ -21,10 +21,14 @@ class FilesController extends Controller
 
         return $uploads;
     }
-
+    
     public static function delete($path) {
         if (file_exists($path)) {
             unlink($path);
         }
+    }
+
+    public static function deletePublic($path) {
+        self::delete(public_path($path));
     }
 }

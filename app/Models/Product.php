@@ -6,7 +6,6 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use App\Models\ProductImage;
 use Carbon\Carbon;
-use App\Http\Controllers\FilesController;
 
 class Product extends Model
 {

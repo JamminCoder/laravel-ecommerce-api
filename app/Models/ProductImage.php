@@ -21,12 +21,12 @@ class ProductImage extends Model
         return $this->belongsTo(Product::class);
     }
 
-    public function url() {
-        return public_path("/product_images/" . $this->image_name);
+    public function path() {
+        return "/product_images/" . $this->image_name;
     }
 
     public function delete() {
-        FilesController::delete($this->url());
+        FilesController::deletePublic($this->path());
         return parent::delete();
     }
 }
