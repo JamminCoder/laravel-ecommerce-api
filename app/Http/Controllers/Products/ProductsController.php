@@ -90,14 +90,9 @@ class ProductsController extends Controller
     }
 
     public static function delete(Request $request) {
-        $sku = $request->sku;
-        $result = Product::where("sku", $sku)->get();
+        $request->validate(["sku" => "required"]);
         
-        if (count($result) === 0) {
-            return "Product does not exist";
-        }
-
-        $product = $result[0];
+        $product = Product::getBySKU($request->sku);
         
         // Delete the images from the file system
         $images = $product->imageNames();
