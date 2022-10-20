@@ -36,18 +36,14 @@ class ProductsController extends Controller
             "sku" => Product::generateSKU($name),
         ]);
 
-        $catagory = Catagory::where("catagory", $catagoryName)->first();
-        if ($catagory) {
-            $catagory->products()->save($product);
+        $catagory = Catagory::where("catagory", $catagoryName)
+        ->firstOr(
+            fn () => new Catagory(["catagory" => $request->catagory])
+        );
 
-        } else {
-            $catagory = new Catagory([
-                "catagory" => $catagoryName,
-            ]);
-
-            $catagory->products()->save($product);
-            $catagory->save();
-        }
+        $catagory->save();
+        $catagory->products()->save($product);
+        
         
         $uploadedImageNames = FilesController::uploadFilesFromRequest($request, "images", "product_images");
         self::saveImagesToProduct($product, $uploadedImageNames);
@@ -91,19 +87,13 @@ class ProductsController extends Controller
         }
         
         if (isset($request->catagory)) {
-            $catagory = Catagory::where("catagory", $request->catagory)->first();
-            if ($catagory) {
-                $catagory->products()->save($product);
-    
-            } else {
-                $catagory = new Catagory([
-                    "catagory" => $request->catagory,
-                ]);
-    
-                $catagory->save();
-                $product->catagory_id = $catagory->id;
-            
-            }
+            $catagory = Catagory::where("catagory", $request->catagory)
+            ->firstOr(
+                fn () => new Catagory(["catagory" => $request->catagory])
+            );
+
+            $catagory->save();
+            $product->catagory_id = $catagory->id;
         }
         
         $product->save();
