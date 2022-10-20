@@ -53,7 +53,7 @@ class Product extends Model
         return $this;
     }
 
-    public static function allWithImageNames() {
+    public static function allWithImages() {
         $products = Product::all();
 
         if (!count($products) >= 1) return "No products";
