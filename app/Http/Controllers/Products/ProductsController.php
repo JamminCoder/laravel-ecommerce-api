@@ -117,6 +117,23 @@ class ProductsController extends Controller
         return Product::allWithImageNames();
     }
 
+    public static function allCatagories() {
+        $catagories = Catagory::all();
+        $res_data = [];
+
+        foreach ($catagories as $cat) {
+            $products = $cat->products()->get();
+            
+            foreach ($products as $pro) {
+                $pro->images = $pro->imageNames();
+            }
+
+            $res_data[$cat->catagory] = $products;
+        }
+
+        return $res_data;
+    }
+
     public static function delete(Request $request) {
         if (!isset($request->sku)) 
             return "Please provide the SKU at the end of the URL: /api/products/delete/sku/{SKU}";
