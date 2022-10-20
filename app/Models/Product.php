@@ -85,8 +85,8 @@ class Product extends Model
     }
 
     public static function getBySKU($sku) {
-        $result = Product::where("sku", $sku)->get();
-        if (count($result) >= 1) return $result[0];
+        $result = Product::where("sku", $sku)->first();
+        if ($result) return $result;
         return null;
     }
 }

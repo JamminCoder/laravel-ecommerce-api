@@ -36,9 +36,8 @@ class ProductsController extends Controller
             "sku" => Product::generateSKU($name),
         ]);
 
-        $catResult = Catagory::where("catagory", $catagoryName)->get();
-        if (count($catResult) >= 1) {
-            $catagory = $catResult[0];
+        $catagory = Catagory::where("catagory", $catagoryName)->first();
+        if ($catagory) {
             $catagory->products()->save($product);
 
         } else {
@@ -92,9 +91,8 @@ class ProductsController extends Controller
         }
         
         if (isset($request->catagory)) {
-            $catResult = Catagory::where("catagory", $request->catagory)->get();
-            if (count($catResult) >= 1) {
-                $catagory = $catResult[0];
+            $catagory = Catagory::where("catagory", $request->catagory)->first();
+            if ($catagory) {
                 $catagory->products()->save($product);
     
             } else {
@@ -114,7 +112,7 @@ class ProductsController extends Controller
     }
 
     public static function all() {
-        return Product::allWithImageNames();
+        return Product::allWithImages();
     }
 
     public static function catagoriesWithProducts() {
@@ -135,12 +133,9 @@ class ProductsController extends Controller
     public static function getBySKU(Request $request) {
         if (!isset($request->sku)) 
             return "Please provide the SKU at the end of the URL: /api/products/sku/{SKU}";
-        
-        $sku = $request->sku;
-        
-        $result = Product::where("sku", $sku)->get();
-        if (count($result) === 0) return null;
-        $product = $result[0];
+
+        $product = Product::where("sku", $request->sku)->first();
+        if (!$product) return "Product does not exist";
         return $product->withImages();
     }
 
