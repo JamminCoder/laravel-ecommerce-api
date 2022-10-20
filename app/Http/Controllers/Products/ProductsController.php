@@ -105,10 +105,6 @@ class ProductsController extends Controller
         return Product::allWithImages();
     }
 
-    public static function catagoriesWithProducts() {
-        return Catagory::allWithProducts();
-    }
-
     public static function delete(Request $request) {
         if (!isset($request->sku)) 
             return "Please provide the SKU at the end of the URL: /api/products/delete/sku/{SKU}";

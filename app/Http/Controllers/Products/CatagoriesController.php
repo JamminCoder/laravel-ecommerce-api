@@ -23,4 +23,8 @@ class CatagoriesController extends Controller
 
         return "Deleted catagory";
     }
+
+    public static function allWithProducts() {
+        return Catagory::allWithProducts();
+    }
 }
