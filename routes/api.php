@@ -3,7 +3,7 @@
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Auth\AuthenticatedSessionController;
-
+use App\Http\Controllers\Products\CatagoriesController;
 use App\Http\Controllers\Products\ProductsController;
 
 /*
@@ -36,6 +36,7 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::post("/products/update", [ProductsController::class, "update"]);
 
     Route::post("/products/delete/sku/{sku}", [ProductsController::class, "delete"]);
+    Route::post("/catagories/delete/{name}", [CatagoriesController::class, "delete"]);
 });
 
 Route::get("/products/all", [ProductsController::class, "all"]);
