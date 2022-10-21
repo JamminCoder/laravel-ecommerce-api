@@ -33,7 +33,10 @@ class Catagory extends Model
                 $pro->catagory = $catagory_name;
             }
 
-            $catagories_with_products[$catagory_name] = $products;
+            array_push($catagories_with_products, [
+                "name" => $catagory_name,
+                "products" => $products
+            ]);
         }
 
         return $catagories_with_products;
