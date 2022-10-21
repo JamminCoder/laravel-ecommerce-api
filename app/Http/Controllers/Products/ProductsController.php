@@ -110,7 +110,13 @@ class ProductsController extends Controller
             return "Please provide the SKU at the end of the URL: /api/products/delete/sku/{SKU}";
         
         $product = Product::getBySKU($request->sku);
+        $catagory = $product->catagory()->first();
         $product->delete();
+
+        // Delete catagory if empty
+        if ($catagory->products()->count() === 0) {
+            $catagory->delete();
+        }
 
         return "OK";
         
