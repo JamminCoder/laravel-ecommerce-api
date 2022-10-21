@@ -102,7 +102,10 @@ class ProductsController extends Controller
     }
 
     public static function all() {
-        return Product::allWithImages();
+        $products = Product::allWithImages();
+        if (!$products) return "No products found";
+        
+        return $products;
     }
 
     public static function delete(Request $request) {
@@ -142,7 +145,7 @@ class ProductsController extends Controller
 
         $product = Product::where("sku", $request->sku)->first();
         if (!$product) return "Product does not exist";
-        return $product->withImages();
+        return $product;
     }
 
     private static function saveImagesToProduct($product, $imageNames) {

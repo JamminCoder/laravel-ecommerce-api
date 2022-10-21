@@ -56,16 +56,13 @@ class Product extends Model
     public static function allWithImages() {
         $products = Product::all();
 
-        if (!count($products) >= 1) return "No products";
-        
-        $products_with_images = array();
+        if (count($products) === 0) return null;
 
         foreach ($products as $product) {
-            $product["images"] = $product->imageNames();
-            array_push($products_with_images, $product);
+            $product->withImages();
         }
 
-        return $products_with_images;
+        return $products;
     }
 
     public static function generateSKU($productName) {
@@ -86,7 +83,7 @@ class Product extends Model
 
     public static function getBySKU($sku) {
         $result = Product::where("sku", $sku)->first();
-        if ($result) return $result;
+        if ($result) return $result->withImages();
         return null;
     }
 }
