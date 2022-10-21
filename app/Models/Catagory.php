@@ -38,4 +38,18 @@ class Catagory extends Model
 
         return $catagories_with_products;
     }
+
+    public static function info() {
+        $catagories = self::all();
+        $info = [];
+
+        foreach ($catagories as $catagory) {
+            array_push($info, [
+                "catagory" => $catagory->catagory,
+                "product_count" => $catagory->products()->count(),
+            ]);
+        }
+        
+        return $info;
+    }
 }

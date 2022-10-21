@@ -41,5 +41,6 @@ Route::middleware('auth:sanctum')->group(function () {
 
 Route::get("/products/all", [ProductsController::class, "all"]);
 Route::get("/catagories/all/products", [CatagoriesController::class, "allWithProducts"]);
+Route::get("/catagories/info", [CatagoriesController::class, "info"]);
 Route::get("/products/sku/{sku}", [ProductsController::class, "getBySKU"]);
 

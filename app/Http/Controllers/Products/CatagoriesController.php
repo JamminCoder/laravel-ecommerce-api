@@ -27,4 +27,9 @@ class CatagoriesController extends Controller
     public static function allWithProducts() {
         return Catagory::allWithProducts();
     }
+
+    public static function info() {
+        // Returns info about the catagories like name and product count
+        return Catagory::info();
+    }
 }
