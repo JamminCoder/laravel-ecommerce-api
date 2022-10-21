@@ -122,6 +122,20 @@ class ProductsController extends Controller
         
     }
 
+    public static function allFromCatagory(Request $request) {
+        if (!isset($request->catagory))
+            return "Supply a catagory";
+        
+        $catagory = Catagory::firstWhere("catagory", $request->catagory);
+        $products = $catagory->products()->get();
+
+        foreach ($products as $product) {
+            $product->withImages();
+        }
+
+        return $products;
+    }
+
     public static function getBySKU(Request $request) {
         if (!isset($request->sku)) 
             return "Please provide the SKU at the end of the URL: /api/products/sku/{SKU}";
