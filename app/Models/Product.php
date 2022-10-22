@@ -48,21 +48,16 @@ class Product extends Model
         return $image_names;
     }
 
-    public function withImages() {
-        $this->images = $this->imageNames();
-        return $this;
-    }
-
-    public static function allWithImages() {
-        $products = Product::all();
-
-        if (count($products) === 0) return null;
-
-        foreach ($products as $product) {
-            $product->withImages();
+    public static function setImages(&$product) {
+        if (is_iterable($product)) {
+            foreach ($product as $prod) {
+                $prod->images = $prod->imageNames();
+            }
+        } else {
+            $product->images = $product->imageNames();
         }
 
-        return $products;
+        return $product;
     }
 
     public static function generateSKU($productName) {
@@ -82,8 +77,8 @@ class Product extends Model
     }
 
     public static function getBySKU($sku) {
-        $result = Product::where("sku", $sku)->first();
-        if ($result) return $result->withImages();
+        $product = Product::where("sku", $sku)->first();
+        if ($product) return Product::setImages($product);
         return null;
     }
 }

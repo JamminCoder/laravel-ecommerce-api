@@ -102,8 +102,10 @@ class ProductsController extends Controller
     }
 
     public static function all() {
-        $products = Product::allWithImages();
-        if (!$products) return "No products found";
+        $products = Product::all();
+        if (!count($products)) return "No products found";
+        
+        Product::setImages($products);
         
         return $products;
     }
@@ -131,12 +133,8 @@ class ProductsController extends Controller
         
         $catagory = Catagory::firstWhere("catagory", $request->catagory);
         $products = $catagory->products()->get();
-
-        foreach ($products as $product) {
-            $product->withImages();
-        }
-
-        return $products;
+        
+        return Product::setImages($products);;
     }
 
     public static function getBySKU(Request $request) {
@@ -145,7 +143,8 @@ class ProductsController extends Controller
 
         $product = Product::where("sku", $request->sku)->first();
         if (!$product) return "Product does not exist";
-        return $product;
+
+        return Product::setImages($product);
     }
 
     private static function saveImagesToProduct($product, $imageNames) {
@@ -157,6 +156,4 @@ class ProductsController extends Controller
             $product->ownImages()->save($productImage);
         }
     }
-
-    
 }

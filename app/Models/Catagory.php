@@ -29,7 +29,7 @@ class Catagory extends Model
             $catagory_name = $cat->catagory;
 
             foreach ($products as $pro) {
-                $pro->images = $pro->imageNames();
+                Product::setImages($pro);
                 $pro->catagory = $catagory_name;
             }
 
