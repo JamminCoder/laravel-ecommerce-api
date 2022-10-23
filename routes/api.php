@@ -34,9 +34,11 @@ Route::middleware('auth:sanctum')->group(function () {
     // Product management
     Route::post("/products/new", [ProductsController::class, "new"]);
     Route::post("/products/update", [ProductsController::class, "update"]);
-
     Route::post("/products/delete/sku/{sku}", [ProductsController::class, "delete"]);
+
+    // catagories
     Route::post("/catagories/delete/{name}", [CatagoriesController::class, "delete"]);
+    Route::post("/catagories/new", [CatagoriesController::class, "new"]);
 });
 
 Route::get("/products/all", [ProductsController::class, "all"]);

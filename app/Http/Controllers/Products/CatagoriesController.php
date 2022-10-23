@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Products;
 use App\Http\Controllers\Controller;
 use App\Models\Catagory;
 use Illuminate\Http\Request;
+use Illuminate\Support\Str;
 
 class CatagoriesController extends Controller
 {
@@ -22,6 +23,25 @@ class CatagoriesController extends Controller
         $catagory->delete();
 
         return "Deleted catagory";
+    }
+
+    public static function new(Request $request) {
+        $request->validate([
+            "catagory" => "required|unique:catagories",
+            "image" => "required|image|mimes:png,jpg,jpeg",
+        ]);
+
+        $imageName = Str::random();
+        $request->image->move("catagory_images", $imageName);
+
+        $catagory = new Catagory([
+            "catagory" => $request->catagory,
+            "image" => $imageName,
+        ]);
+
+        $catagory->save();
+
+        return "Created new catagory";
     }
 
     public static function allWithProducts() {

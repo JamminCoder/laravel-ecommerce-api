@@ -13,7 +13,8 @@ class Catagory extends Model
     public $timestamps = false;
 
     protected $fillable = [
-        "catagory"
+        "catagory",
+        "image",
     ];
 
     public function products() {
