@@ -43,13 +43,27 @@ class Catagory extends Model
         return $catagories_with_products;
     }
 
-    public static function info() {
+    public static function getByName($name) {
+        $catagory = Catagory::firstWhere("catagory", $name);
+        return $catagory;
+    }
+
+    public function info() {
+        return [
+            "catagory" => $this->catagory,
+            "product_count" => $this->products()->count(),
+            "image" => "catagory_images/$this->image",
+        ];
+    }
+
+    public static function allInfo() {
         $catagories = self::all();
         $info = [];
 
         foreach ($catagories as $catagory) {
             array_push($info, [
                 "catagory" => $catagory->catagory,
+                "image" => "catagory_images/$catagory->image",
                 "product_count" => $catagory->products()->count(),
             ]);
         }
