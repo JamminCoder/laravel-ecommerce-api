@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Products;
 use App\Http\Controllers\Controller;
 use App\Models\Catagory;
+use App\Models\Product;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
 
@@ -50,6 +51,7 @@ class CatagoriesController extends Controller
 
         $catagory = Catagory::getByName($request->catagory);
         $catagory->products = $catagory->products()->get();
+        Product::setImages($catagory->products);
         return $catagory;
     }
 

@@ -41,8 +41,6 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::post("/catagories/new", [CatagoriesController::class, "new"]);
 });
 
-Route::get("/products/all", [ProductsController::class, "all"]);
-Route::get("/products/catagory/{catagory}", [ProductsController::class, "allFromCatagory"]);
 Route::get("/catagories/all/products", [CatagoriesController::class, "allWithProducts"]);
 Route::get("/catagories/{catagory}", [CatagoriesController::class, "getWithProducts"]);
 Route::get("/catagories/{catagory}/info", [CatagoriesController::class, "info"]);

@@ -101,15 +101,6 @@ class ProductsController extends Controller
         return "Updated product";
     }
 
-    public static function all() {
-        $products = Product::all();
-        if (!count($products)) return "No products found";
-        
-        Product::setImages($products);
-        
-        return $products;
-    }
-
     public static function delete(Request $request) {
         if (!isset($request->sku)) 
             return "Please provide the SKU at the end of the URL: /api/products/delete/sku/{SKU}";
@@ -125,16 +116,6 @@ class ProductsController extends Controller
 
         return "OK";
         
-    }
-
-    public static function allFromCatagory(Request $request) {
-        if (!isset($request->catagory))
-            return "Supply a catagory";
-        
-        $catagory = Catagory::firstWhere("catagory", $request->catagory);
-        $products = $catagory->products()->get();
-        
-        return Product::setImages($products);;
     }
 
     public static function getBySKU(Request $request) {
