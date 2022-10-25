@@ -36,10 +36,9 @@ class ProductsController extends Controller
             "sku" => Product::generateSKU($name),
         ]);
 
-        $catagory = Catagory::where("catagory", $catagoryName)
-        ->firstOr(
-            fn () => new Catagory(["catagory" => $request->catagory])
-        );
+        $catagory = Catagory::firstWhere("catagory", $catagoryName);
+
+        if (!$catagory) return "Invalid catagory";
 
         $catagory->save();
         $catagory->products()->save($product);
@@ -87,10 +86,8 @@ class ProductsController extends Controller
         }
         
         if (isset($request->catagory)) {
-            $catagory = Catagory::where("catagory", $request->catagory)
-            ->firstOr(
-                fn () => new Catagory(["catagory" => $request->catagory])
-            );
+            $catagory = Catagory::firstWhere("catagory", $request->catagory);
+            if (!$catagory) return "Invalid catagory";
 
             $catagory->save();
             $product->catagory_id = $catagory->id;
