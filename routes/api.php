@@ -3,6 +3,7 @@
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Auth\AuthenticatedSessionController;
+use App\Http\Controllers\PayPalController;
 use App\Http\Controllers\Products\CatagoriesController;
 use App\Http\Controllers\Products\ProductsController;
 
@@ -48,3 +49,6 @@ Route::get("/catagories/{catagory}/info", [CatagoriesController::class, "info"])
 Route::get("/catagories/info/all", [CatagoriesController::class, "allInfo"]);
 Route::get("/products/sku/{sku}", [ProductsController::class, "getBySKU"]);
 
+// Paypal
+Route::get("/payment", [PayPalController::class, "payment"]);
+Route::get("/paypal/id", [PayPalController::class, "identity"]);
