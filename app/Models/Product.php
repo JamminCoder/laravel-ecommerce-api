@@ -11,7 +11,7 @@ use Carbon\Carbon;
 class Product extends Model
 {
     use HasFactory;
-
+    
     protected $fillable = [
         "catagory",
         "name",
@@ -80,5 +80,10 @@ class Product extends Model
         $product = Product::where("sku", $sku)->first();
         if ($product) return Product::setImages($product);
         return null;
+    }
+
+    public function save(array $options = []) {
+        unset($this->images);
+        parent::save($options);
     }
 }

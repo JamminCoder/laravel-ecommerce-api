@@ -92,7 +92,7 @@ class ProductsController extends Controller
             $catagory->save();
             $product->catagory_id = $catagory->id;
         }
-        
+
         $product->save();
 
         return "Updated product";
