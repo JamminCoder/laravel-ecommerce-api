@@ -67,7 +67,7 @@ class PayPalController extends Controller
 
         $response = $client->post(self::BASE_URL . "/v1/identity/generate-token");
 
-        return json_decode($response->getBody(), true);
+        return $response->getBody();
     }
 
     public static function identity() {
