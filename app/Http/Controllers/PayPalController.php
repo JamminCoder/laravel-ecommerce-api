@@ -38,8 +38,10 @@ class PayPalController extends Controller
         return $response->getBody();
     }
 
-    public static function capturePayment($orderID) {
+    public static function capturePayment(Request $request) {
         $access_token = self::generateAccessToken();
+        $orderID = $request->orderID;
+        
         $url = self::BASE_URL . "/v2/checkout/orders/$orderID/capture";
 
         $client = new HttpClient([
