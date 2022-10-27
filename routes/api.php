@@ -51,4 +51,5 @@ Route::get("/products/sku/{sku}", [ProductsController::class, "getBySKU"]);
 
 // Paypal
 Route::get("/payment", [PayPalController::class, "payment"]);
+Route::get("/paypal/client-token", [PayPalController::class, "generateClientToken"]);
 Route::get("/paypal/id", [PayPalController::class, "identity"]);

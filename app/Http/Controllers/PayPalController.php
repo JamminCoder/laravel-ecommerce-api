@@ -7,8 +7,25 @@ use GuzzleHttp\Client as HttpClient;
 
 class PayPalController extends Controller
 {
+    public const BASE_URL = "https://api-m.sandbox.paypal.com";
+
+    public static function generateClientToken() {
+        $access_token = self::generateAccessToken();
+        $client = new HttpClient([
+            "headers" => [
+                "Authorization" => "Bearer $access_token",
+                "Content-Type" => "application/json",
+                "Accept-Language" => "en_US",
+            ]
+        ]);
+
+        $response = $client->post(self::BASE_URL . "/v1/identity/generate-token");
+
+        return json_decode($response->getBody(), true);
+    }
+
     public static function identity() {
-        $access_token = self::token();
+        $access_token = self::generateAccessToken();
 
         $client = new HttpClient([
             "headers" => [
@@ -19,13 +36,13 @@ class PayPalController extends Controller
         
         $response = $client->request(
             "GET",
-            "https://api-m.sandbox.paypal.com/v1/identity/oauth2/userinfo?schema=paypalv1.1"
+            self::BASE_URL . "/v1/identity/oauth2/userinfo?schema=paypalv1.1"
         );
 
         return $response->getBody();
     }
 
-    public static function token() {
+    public static function generateAccessToken() {
         /**
          * curl -v -X POST "https://api-m.sandbox.paypal.com/v1/oauth2/token" \
             -u "<CLIENT_ID>:<CLIENT_SECRET>" \
@@ -35,7 +52,7 @@ class PayPalController extends Controller
 
         $client = new HttpClient();
         $response = $client->post(
-            "https://api-m.sandbox.paypal.com/v1/oauth2/token",
+            self::BASE_URL . "/v1/oauth2/token",
             [
                 "body" => "grant_type=client_credentials",
 
