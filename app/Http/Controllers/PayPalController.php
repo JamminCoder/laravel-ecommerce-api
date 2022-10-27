@@ -9,6 +9,50 @@ class PayPalController extends Controller
 {
     public const BASE_URL = "https://api-m.sandbox.paypal.com";
 
+    public static function createOrder() {
+        $access_token = self::generateAccessToken();
+        $url = self::BASE_URL . "/v2/checkout/orders";
+        $purchaseAmount = "100.00";
+
+        $client = new HttpClient([
+            "headers" => [
+                "Authorization" => "Bearer $access_token",
+                "Content-Type" => "application/json",
+            ]
+        ]);
+
+        $response = $client->post($url, [
+            "body" => json_encode([
+                "intent" => "CAPTURE",
+                "purchase_units" => [
+                    [
+                        "amount" => [
+                            "currency_code" => "USD",
+                            "value" => $purchaseAmount
+                        ]
+                    ]
+                ]
+            ])
+        ]);
+
+        return $response->getBody();
+    }
+
+    public static function capturePayment($orderID) {
+        $access_token = self::generateAccessToken();
+        $url = self::BASE_URL . "/v2/checkout/orders/$orderID/capture";
+
+        $client = new HttpClient([
+            "headers" => [
+                "Authorization" => "Bearer $access_token",
+                "Content-Type" => "application/json",
+            ]
+        ]);
+
+        $response = $client->post($url);
+        return json_encode($response->getBody(), true);
+    }
+
     public static function generateClientToken() {
         $access_token = self::generateAccessToken();
         $client = new HttpClient([
