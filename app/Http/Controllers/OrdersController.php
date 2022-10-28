@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Models\Product;
+use App\Http\Controllers\PayPalController;
 
 class OrdersController extends Controller
 {
@@ -12,9 +14,22 @@ class OrdersController extends Controller
         error_log($request->address_city);
         error_log($request->address_state);
         error_log($request->address_zip);
-        
         error_log($request->product_skus);
 
-        return "OK";
+
+        $totalPrice = self::calcTotalPrice(explode(", ", $request->product_skus));
+        $orderData = PayPalController::createOrder($totalPrice);
+
+        return $orderData;
+    }
+
+    private static function calcTotalPrice($product_skus) {
+        $total = 0;
+        foreach ($product_skus as $sku) {
+            $product = Product::firstWhere("sku", $sku);
+            $total += $product->price;
+        }
+
+        return $total;
     }
 }

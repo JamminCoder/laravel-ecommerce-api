@@ -9,10 +9,9 @@ class PayPalController extends Controller
 {
     public const BASE_URL = "https://api-m.sandbox.paypal.com";
 
-    public static function createOrder(Request $request) {
+    public static function createOrder($purchaseAmount) {
         $access_token = self::generateAccessToken();
         $url = self::BASE_URL . "/v2/checkout/orders";
-        $purchaseAmount = "100.00";
 
         $client = new HttpClient([
             "headers" => [
