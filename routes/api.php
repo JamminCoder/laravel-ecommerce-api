@@ -50,7 +50,7 @@ Route::get("/catagories/info/all", [CatagoriesController::class, "allInfo"]);
 Route::get("/products/sku/{sku}", [ProductsController::class, "getBySKU"]);
 
 // Paypal
-Route::get("/paypal/orders/create", [PayPalController::class, "createOrder"]);
+Route::post("/paypal/orders/create", [PayPalController::class, "createOrder"]);
 
 Route::get("/paypal/orders/{orderID}/capture", [PayPalController::class, "capturePayment"]);
 
