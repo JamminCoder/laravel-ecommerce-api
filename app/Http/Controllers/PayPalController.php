@@ -20,6 +20,7 @@ class PayPalController extends Controller
                 "Content-Type" => "application/json",
             ]
         ]);
+        
         $response = $client->post($url, [
             "body" => json_encode([
                 "intent" => "CAPTURE",

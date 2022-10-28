@@ -3,6 +3,7 @@
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Auth\AuthenticatedSessionController;
+use App\Http\Controllers\OrdersController;
 use App\Http\Controllers\PayPalController;
 use App\Http\Controllers\Products\CatagoriesController;
 use App\Http\Controllers\Products\ProductsController;
@@ -50,7 +51,7 @@ Route::get("/catagories/info/all", [CatagoriesController::class, "allInfo"]);
 Route::get("/products/sku/{sku}", [ProductsController::class, "getBySKU"]);
 
 // Paypal
-Route::post("/paypal/orders/create", [PayPalController::class, "createOrder"]);
+Route::post("/paypal/orders/create", [OrdersController::class, "new"]);
 
 Route::get("/paypal/orders/{orderID}/capture", [PayPalController::class, "capturePayment"]);
 
