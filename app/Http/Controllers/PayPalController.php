@@ -9,7 +9,7 @@ class PayPalController extends Controller
 {
     public const BASE_URL = "https://api-m.sandbox.paypal.com";
 
-    public static function createOrder() {
+    public static function createOrder(Request $request) {
         $access_token = self::generateAccessToken();
         $url = self::BASE_URL . "/v2/checkout/orders";
         $purchaseAmount = "100.00";
@@ -21,6 +21,25 @@ class PayPalController extends Controller
             ]
         ]);
 
+        if (isset($request->card_number)) {
+            $payment_source = [
+                "card" => [
+                    "number" => $request->card_number,
+                    "expiry" => $request->expiration_date,
+                    "name" => $request->name,
+                    "billing_address" => [
+                        "address_line_1" => $request->billing_address_street,
+                        "address_line_2" => isset($request->billing_address_unit) ? $request->billing_address_unit : null,
+                        "admin_area_1" => $request->billing_address_state,
+                        "admin_area_2" => $request->billing_address_city,
+                        "postal_code" => $request->billing_address_zip,
+                    ]
+                ]
+            ];
+        } else {
+            $payment_source = null;
+        }
+
         $response = $client->post($url, [
             "body" => json_encode([
                 "intent" => "CAPTURE",
@@ -31,7 +50,9 @@ class PayPalController extends Controller
                             "value" => $purchaseAmount
                         ]
                     ]
-                ]
+                ],
+
+                "payment_source" => $payment_source,
             ])
         ]);
 
