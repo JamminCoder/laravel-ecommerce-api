@@ -13,6 +13,7 @@ class OrdersController extends Controller
         error_log($request->address_state);
         error_log($request->address_zip);
         
+        error_log($request->item_names);
 
         return "OK";
     }
