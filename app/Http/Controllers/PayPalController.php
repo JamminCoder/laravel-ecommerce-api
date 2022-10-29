@@ -22,7 +22,7 @@ class PayPalController extends Controller
         
         $response = $client->post($url, [
             "body" => json_encode([
-                "intent" => "CAPTURE",
+                "intent" => "AUTHORIZE",
                 "purchase_units" => [
                     [
                         "amount" => [
@@ -31,6 +31,11 @@ class PayPalController extends Controller
                         ]
                     ]
                 ],
+
+                "application_context" => [
+                    "brand_name" => "Zoar Valley Gifts & More",
+                    "return_url" => "http://localhost:3000/shop/checkout"
+                ]
             ])
         ]);
 
@@ -53,6 +58,29 @@ class PayPalController extends Controller
         $response = $client->post($url);
         return json_encode($response->getBody(), true);
     }
+
+    public static function authorizePayment(Request $request) {
+        $access_token = self::generateAccessToken();
+        $orderID = $request->orderID;
+
+        $url = self::BASE_URL . "/v2/checkout/orders/$orderID/authorize";
+
+        $client = new HttpClient([
+            "headers" => [
+                "Authorization" => "Bearer $access_token",
+                "Content-Type" => "application/json",
+            ]
+        ]);
+
+        $response = $client->post($url, [
+            "body" => json_encode([
+                "intent" => "AUTHORIZE"
+            ])
+        ]);
+        
+        return json_encode($response->getBody(), true);
+    }
+
 
     public static function generateClientToken() {
         $access_token = self::generateAccessToken();
