@@ -34,7 +34,7 @@ class PayPalController extends Controller
 
                 "application_context" => [
                     "brand_name" => "Zoar Valley Gifts & More",
-                    "return_url" => "http://localhost:3000/shop/checkout"
+                    "return_url" => "http://localhost:3000/#/shop/checkout"
                 ]
             ])
         ]);
