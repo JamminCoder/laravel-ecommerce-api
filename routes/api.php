@@ -54,7 +54,7 @@ Route::get("/products/sku/{sku}", [ProductsController::class, "getBySKU"]);
 Route::post("/orders/create", [OrdersController::class, "new"]);
 Route::post("/orders/{orderID}/capture", [PayPalController::class, "capturePayment"]);
 
-Route::get("/paypal/client-token", [PayPalController::class, "generateClientToken"]);
-Route::get("/paypal/access-token", [PayPalController::class, "generateAccessToken"]);
+// Route::get("/paypal/client-token", [PayPalController::class, "generateClientToken"]);
+// Route::get("/paypal/access-token", [PayPalController::class, "generateAccessToken"]);
 
-Route::get("/paypal/id", [PayPalController::class, "identity"]);
+// Route::get("/paypal/id", [PayPalController::class, "identity"]);
