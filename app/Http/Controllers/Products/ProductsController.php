@@ -20,12 +20,14 @@ class ProductsController extends Controller
             "name" => "required|unique:products|max:64",
             "description" => "required|max:255",
             "price" => "required",
+            "stock" => "required"
         ]);
 
         $name = $request->name;
         $description = $request->description;
         $price = $request->price;
         $sku = Product::generateSKU($name);
+        $stock = $request->stock;
         $catagoryName = $request->catagory;
 
 
@@ -34,6 +36,7 @@ class ProductsController extends Controller
             "description" => $description,
             "price" => $price,
             "sku" => Product::generateSKU($name),
+            "stock" => $stock,
         ]);
 
         $catagory = Catagory::firstWhere("catagory", $catagoryName);
@@ -53,6 +56,7 @@ class ProductsController extends Controller
             "description" => $description,
             "price" => $price,
             "sku" => $sku,
+            "stock" => $stock,
         ];
     }
 
@@ -63,7 +67,8 @@ class ProductsController extends Controller
             "catagory" => "max:64",
             "name" => "max:64",
             "description" => "max:255",
-            "sku" => "required"
+            "sku" => "required",
+            "stock" => "required"
         ]);
 
         $product = Product::getBySKU($request->sku);
@@ -92,6 +97,8 @@ class ProductsController extends Controller
             $catagory->save();
             $product->catagory_id = $catagory->id;
         }
+
+        $product->stock = $request->stock;
 
         $product->save();
 
