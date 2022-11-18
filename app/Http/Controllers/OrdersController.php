@@ -40,6 +40,7 @@ class OrdersController extends Controller
         foreach ($product_skus as $sku) {
             $product = Product::firstWhere("sku", $sku);
             $product->stock -= 1;
+            $product->update();
         }
     }
 }
