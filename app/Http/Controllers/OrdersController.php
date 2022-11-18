@@ -16,8 +16,11 @@ class OrdersController extends Controller
         error_log($request->address_zip);
         error_log($request->product_skus);
 
+        $skus = explode(", ", $request->product_skus);
 
-        $totalPrice = self::calcTotalPrice(explode(", ", $request->product_skus));
+        $totalPrice = self::calcTotalPrice($skus);
+        self::removeStock($skus);
+        
         $orderData = PayPalController::createOrder($totalPrice);
 
         return $orderData;
@@ -31,5 +34,12 @@ class OrdersController extends Controller
         }
 
         return $total;
+    }
+
+    private static function removeStock($product_skus) {
+        foreach ($product_skus as $sku) {
+            $product = Product::firstWhere("sku", $sku);
+            $product->stock -= 1;
+        }
     }
 }
