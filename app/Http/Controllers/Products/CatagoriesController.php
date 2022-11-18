@@ -45,7 +45,7 @@ class CatagoriesController extends Controller
         return "Created new catagory";
     }
 
-    public static function getWithProducts(Request $request) {
+    public static function productsFromCatagory(Request $request) {
         if (!isset($request->catagory))
             return "No catagory set";
 
@@ -55,7 +55,7 @@ class CatagoriesController extends Controller
         return $catagory;
     }
 
-    public static function allWithProducts() {
+    public static function allCatagoriesWithProducts() {
         return Catagory::allWithProducts();
     }
 
@@ -68,8 +68,8 @@ class CatagoriesController extends Controller
         return $catagory->info();
     }
 
-    public static function allInfo() {
+    public static function infoAll() {
         // Returns info about the catagories like name and product count
-        return Catagory::allInfo();
+        return Catagory::infoAll();
     }
 }

@@ -8,16 +8,6 @@ use App\Http\Controllers\PayPalController;
 use App\Http\Controllers\Products\CatagoriesController;
 use App\Http\Controllers\Products\ProductsController;
 
-/*
-|--------------------------------------------------------------------------
-| API Routes
-|--------------------------------------------------------------------------
-|
-| Here is where you can register API routes for your application. These
-| routes are loaded by the RouteServiceProvider within a group which
-| is assigned the "api" middleware group. Enjoy building your API!
-|
-*/
 
 Route::post("/login", [AuthenticatedSessionController::class, 'store']);
 
@@ -43,18 +33,15 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::post("/catagories/new", [CatagoriesController::class, "new"]);
 });
 
-Route::get("/catagories/all/products", [CatagoriesController::class, "allWithProducts"]);
-Route::get("/catagories/{catagory}", [CatagoriesController::class, "getWithProducts"]);
+
+// Public routes
+Route::get("/catagories/all/products", [CatagoriesController::class, "allCatagoriesWithProducts"]);
+Route::get("/catagories/{catagory}", [CatagoriesController::class, "productsFromCatagory"]);
 Route::get("/catagories/{catagory}/info", [CatagoriesController::class, "info"]);
 
-Route::get("/catagories/info/all", [CatagoriesController::class, "allInfo"]);
+Route::get("/catagories/info/all", [CatagoriesController::class, "infoAll"]);
 Route::get("/products/sku/{sku}", [ProductsController::class, "getBySKU"]);
 
 // Paypal
 Route::post("/orders/create", [OrdersController::class, "new"]);
 Route::post("/orders/{orderID}/capture", [PayPalController::class, "capturePayment"]);
-
-// Route::get("/paypal/client-token", [PayPalController::class, "generateClientToken"]);
-// Route::get("/paypal/access-token", [PayPalController::class, "generateAccessToken"]);
-
-// Route::get("/paypal/id", [PayPalController::class, "identity"]);

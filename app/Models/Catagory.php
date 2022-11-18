@@ -56,7 +56,7 @@ class Catagory extends Model
         ];
     }
 
-    public static function allInfo() {
+    public static function infoAll() {
         $catagories = self::all();
         $info = [];
 
