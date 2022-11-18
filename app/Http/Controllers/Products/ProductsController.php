@@ -141,4 +141,12 @@ class ProductsController extends Controller
             $product->ownImages()->save($productImage);
         }
     }
+
+    public static function removeStock($product_skus) {
+        foreach ($product_skus as $sku) {
+            $product = Product::firstWhere("sku", $sku);
+            $product->stock -= 1;
+            $product->update();
+        }
+    }
 }

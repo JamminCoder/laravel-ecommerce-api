@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Controllers\Products\ProductsController;
 use Illuminate\Http\Request;
 use GuzzleHttp\Client as HttpClient;
 
@@ -56,6 +57,7 @@ class PayPalController extends Controller
         ]);
 
         $response = $client->post($url);
+        if ($response->getStatusCode() === 201) ProductsController::removeStock($request->skus);
         return json_encode($response->getBody(), true);
     }
 
