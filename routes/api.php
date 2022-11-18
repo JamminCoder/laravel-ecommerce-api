@@ -34,13 +34,20 @@ Route::middleware('auth:sanctum')->group(function () {
 });
 
 
-// Public routes
+/**************
+ Public routes
+***************/
+
+// Catagories
 Route::get("/catagories/all/products", [CatagoriesController::class, "allCatagoriesWithProducts"]);
 Route::get("/catagories/{catagory}", [CatagoriesController::class, "productsFromCatagory"]);
 Route::get("/catagories/{catagory}/info", [CatagoriesController::class, "info"]);
-
 Route::get("/catagories/info/all", [CatagoriesController::class, "infoAll"]);
+
+
+// Products
 Route::get("/products/sku/{sku}", [ProductsController::class, "getBySKU"]);
+
 
 // Paypal
 Route::post("/orders/create", [OrdersController::class, "new"]);
