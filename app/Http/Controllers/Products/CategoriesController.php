@@ -29,6 +29,7 @@ class CategoriesController extends Controller
     public static function new(Request $request) {
         $request->validate([
             "category" => "required|unique:categories",
+            "description" => "required|max:255",
             "image" => "required|image|mimes:png,jpg,jpeg",
         ]);
 
@@ -37,6 +38,7 @@ class CategoriesController extends Controller
 
         $category = new Category([
             "category" => $request->category,
+            "description" => $request->description,
             "image" => $imageName,
         ]);
 
