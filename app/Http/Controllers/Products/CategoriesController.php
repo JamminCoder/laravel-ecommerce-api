@@ -47,6 +47,31 @@ class CategoriesController extends Controller
         return "Created new category";
     }
 
+    public static function update(Request $request) {
+        $request->validate([
+            "category" => "required|unique:categories",
+            "description" => "required|max:255",
+        ]);
+
+        $category = new Category([
+            "category" => $request->category,
+            "description" => $request->description,
+        ]);
+
+        if (isset($request->image)) {
+            $imageName = Str::random();
+            $request->image->move("category_images", $imageName);
+            $category->image = $imageName;
+        }
+        
+        $category->update();
+
+        return "Updated new category";
+    }
+
+
+
+
     public static function productsFromCategory(Request $request) {
         if (!isset($request->category))
             return "No category set";
