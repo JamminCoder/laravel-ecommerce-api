@@ -8,7 +8,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Product;
 use App\Models\ProductImage;
 use App\Http\Controllers\FilesController;
-use App\Models\Catagory;
+use App\Models\Category;
 
 class ProductsController extends Controller
 {
@@ -16,7 +16,7 @@ class ProductsController extends Controller
         $request->validate([
             "images.*" => "required|image|mimes:png,jpg,jpeg",
             "images.*files" => "required|image|mimes:png,jpg,jpeg",
-            "catagory" => "required|max:64",
+            "category" => "required|max:64",
             "name" => "required|unique:products|max:64",
             "description" => "required|max:255",
             "price" => "required",
@@ -28,7 +28,7 @@ class ProductsController extends Controller
         $price = $request->price;
         $sku = Product::generateSKU($name);
         $stock = $request->stock;
-        $catagoryName = $request->catagory;
+        $categoryName = $request->category;
 
 
         $product = new Product([
@@ -39,12 +39,12 @@ class ProductsController extends Controller
             "stock" => $stock,
         ]);
 
-        $catagory = Catagory::firstWhere("catagory", $catagoryName);
+        $category = Category::firstWhere("category", $categoryName);
 
-        if (!$catagory) return "Invalid catagory";
+        if (!$category) return "Invalid category";
 
-        $catagory->save();
-        $catagory->products()->save($product);
+        $category->save();
+        $category->products()->save($product);
         
         
         $uploadedImageNames = FilesController::uploadFilesFromRequest($request, "images", "product_images");
@@ -64,7 +64,7 @@ class ProductsController extends Controller
         $request->validate([
             "images.*" => "image|mimes:png,jpg,jpeg",
             "images.*files" => "image|mimes:png,jpg,jpeg",
-            "catagory" => "max:64",
+            "category" => "max:64",
             "name" => "max:64",
             "description" => "max:255",
             "sku" => "required",
@@ -90,12 +90,12 @@ class ProductsController extends Controller
             self::saveImagesToProduct($product, $uploadedImageNames);
         }
         
-        if (isset($request->catagory)) {
-            $catagory = Catagory::firstWhere("catagory", $request->catagory);
-            if (!$catagory) return "Invalid catagory";
+        if (isset($request->category)) {
+            $category = Category::firstWhere("category", $request->category);
+            if (!$category) return "Invalid category";
 
-            $catagory->save();
-            $product->catagory_id = $catagory->id;
+            $category->save();
+            $product->category_id = $category->id;
         }
 
         $product->stock = $request->stock;
@@ -110,12 +110,12 @@ class ProductsController extends Controller
             return "Please provide the SKU at the end of the URL: /api/products/delete/sku/{SKU}";
         
         $product = Product::getBySKU($request->sku);
-        $catagory = $product->catagory()->first();
+        $category = $product->category()->first();
         $product->delete();
 
-        // Delete catagory if empty
-        if ($catagory->products()->count() === 0) {
-            $catagory->delete();
+        // Delete category if empty
+        if ($category->products()->count() === 0) {
+            $category->delete();
         }
 
         return "OK";

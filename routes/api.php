@@ -5,7 +5,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Auth\AuthenticatedSessionController;
 use App\Http\Controllers\OrdersController;
 use App\Http\Controllers\PayPalController;
-use App\Http\Controllers\Products\CatagoriesController;
+use App\Http\Controllers\Products\CategoriesController;
 use App\Http\Controllers\Products\ProductsController;
 
 
@@ -28,9 +28,9 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::post("/products/update", [ProductsController::class, "update"]);
     Route::post("/products/delete/sku/{sku}", [ProductsController::class, "delete"]);
 
-    // catagories
-    Route::post("/catagories/delete/{name}", [CatagoriesController::class, "delete"]);
-    Route::post("/catagories/new", [CatagoriesController::class, "new"]);
+    // categories
+    Route::post("/categories/delete/{name}", [CategoriesController::class, "delete"]);
+    Route::post("/categories/new", [CategoriesController::class, "new"]);
 });
 
 
@@ -38,11 +38,11 @@ Route::middleware('auth:sanctum')->group(function () {
  Public routes
 ***************/
 
-// Catagories
-Route::get("/catagories/all/products", [CatagoriesController::class, "allCatagoriesWithProducts"]);
-Route::get("/catagories/{catagory}", [CatagoriesController::class, "productsFromCatagory"]);
-Route::get("/catagories/{catagory}/info", [CatagoriesController::class, "info"]);
-Route::get("/catagories/info/all", [CatagoriesController::class, "infoAll"]);
+// Categories
+Route::get("/categories/all/products", [CategoriesController::class, "allCategoriesWithProducts"]);
+Route::get("/categories/{category}", [CategoriesController::class, "productsFromCategory"]);
+Route::get("/categories/{category}/info", [CategoriesController::class, "info"]);
+Route::get("/categories/info/all", [CategoriesController::class, "infoAll"]);
 
 
 // Products

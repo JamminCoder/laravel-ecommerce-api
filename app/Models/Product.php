@@ -5,7 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use App\Models\ProductImage;
-use App\Models\Catagory;
+use App\Models\Category;
 use Carbon\Carbon;
 
 class Product extends Model
@@ -13,7 +13,7 @@ class Product extends Model
     use HasFactory;
     
     protected $fillable = [
-        "catagory",
+        "category",
         "name",
         "description",
         "price",
@@ -25,8 +25,8 @@ class Product extends Model
         return $this->hasMany(ProductImage::class);
     }
 
-    public function catagory() {
-        return $this->belongsTo(Catagory::class);
+    public function category() {
+        return $this->belongsTo(Category::class);
     }
 
     public function deleteImages() {

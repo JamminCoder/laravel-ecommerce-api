@@ -6,14 +6,14 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use App\Models\Product;
 
-class Catagory extends Model
+class Category extends Model
 {
     use HasFactory;
 
     public $timestamps = false;
 
     protected $fillable = [
-        "catagory",
+        "category",
         "image",
     ];
 
@@ -22,49 +22,49 @@ class Catagory extends Model
     }
 
     public static function allWithProducts() {
-        $catagories = Catagory::all();
-        $catagories_with_products = [];
+        $categories = Category::all();
+        $categories_with_products = [];
 
-        foreach ($catagories as $cat) {
+        foreach ($categories as $cat) {
             $products = $cat->products()->get();
-            $catagory_name = $cat->catagory;
+            $category_name = $cat->category;
 
             foreach ($products as $pro) {
                 Product::setImages($pro);
-                $pro->catagory = $catagory_name;
+                $pro->category = $category_name;
             }
 
-            array_push($catagories_with_products, [
-                "name" => $catagory_name,
+            array_push($categories_with_products, [
+                "name" => $category_name,
                 "products" => $products
             ]);
         }
 
-        return $catagories_with_products;
+        return $categories_with_products;
     }
 
     public static function getByName($name) {
-        $catagory = Catagory::firstWhere("catagory", $name);
-        return $catagory;
+        $category = Category::firstWhere("category", $name);
+        return $category;
     }
 
     public function info() {
         return [
-            "catagory" => $this->catagory,
+            "category" => $this->category,
             "product_count" => $this->products()->count(),
-            "image" => "catagory_images/$this->image",
+            "image" => "category_images/$this->image",
         ];
     }
 
     public static function infoAll() {
-        $catagories = self::all();
+        $categories = self::all();
         $info = [];
 
-        foreach ($catagories as $catagory) {
+        foreach ($categories as $category) {
             array_push($info, [
-                "catagory" => $catagory->catagory,
-                "image" => "catagory_images/$catagory->image",
-                "product_count" => $catagory->products()->count(),
+                "category" => $category->category,
+                "image" => "category_images/$category->image",
+                "product_count" => $category->products()->count(),
             ]);
         }
         
