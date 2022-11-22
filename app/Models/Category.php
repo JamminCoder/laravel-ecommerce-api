@@ -15,11 +15,14 @@ class Category extends Model
     protected $fillable = [
         "category",
         "description",
-        "image",
     ];
 
     public function products() {
         return $this->hasMany(Product::class);
+    }
+
+    public function image() {
+        return $this->hasOne(CategoryImage::class);
     }
 
     public static function allWithProducts() {
