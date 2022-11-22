@@ -10,10 +10,10 @@ use Illuminate\Support\Str;
 class CategoriesController extends Controller
 {
     public static function delete(Request $request) {
-        if (!isset($request->name))
+        if (!isset($request->category))
             return "Requires a category name to delete";
         
-        $category = Category::firstWhere("category", $request->name);
+        $category = Category::firstWhere("category", $request->category);
 
         // Delete products from category
         $products = $category->products()->get();

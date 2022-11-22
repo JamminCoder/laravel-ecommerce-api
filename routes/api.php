@@ -30,8 +30,8 @@ Route::middleware('auth:sanctum')->group(function () {
 
     // categories
     Route::post("/categories/new", [CategoriesController::class, "new"]);
-    Route::post("/categories/update/{name}", [CategoriesController::class, "update"]);
-    Route::post("/categories/delete/{name}", [CategoriesController::class, "delete"]);
+    Route::post("/categories/update/{category}", [CategoriesController::class, "update"]);
+    Route::post("/categories/delete/{category}", [CategoriesController::class, "delete"]);
 });
 
 
