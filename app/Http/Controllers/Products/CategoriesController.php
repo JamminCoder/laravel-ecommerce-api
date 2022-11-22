@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Products;
 use App\Http\Controllers\Controller;
 use App\Models\Category;
+use App\Models\CategoryImage;
 use App\Models\Product;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
@@ -33,16 +34,18 @@ class CategoriesController extends Controller
             "image" => "required|image|mimes:png,jpg,jpeg",
         ]);
 
-        $imageName = Str::random();
-        $request->image->move("category_images", $imageName);
 
         $category = new Category([
             "category" => $request->category,
             "description" => $request->description,
-            "image" => $imageName,
         ]);
 
         $category->save();
+
+        $image_name = Str::random();
+        $image = new CategoryImage(["image_name" => $image_name]);
+        $category->image()->save($image);
+        $request->image->move("category_images", $image_name);
 
         return "Created new category";
     }
@@ -53,24 +56,16 @@ class CategoriesController extends Controller
             "description" => "required|max:255",
         ]);
 
-        $category = new Category([
-            "category" => $request->category,
-            "description" => $request->description,
-        ]);
+        $category = Category::firstWhere("category", $request->category);
 
-        if (isset($request->image)) {
-            $imageName = Str::random();
-            $request->image->move("category_images", $imageName);
-            $category->image = $imageName;
-        }
+        $category->category = $request->category;
+        $category->description = $request->description;
+
         
         $category->update();
 
         return "Updated new category";
     }
-
-
-
 
     public static function productsFromCategory(Request $request) {
         if (!isset($request->category))
@@ -79,6 +74,8 @@ class CategoriesController extends Controller
         $category = Category::getByName($request->category);
         $category->products = $category->products()->get();
         Product::setImages($category->products);
+
+        $category->image = "category_images/" . $category->imageName();
         return $category;
     }
 

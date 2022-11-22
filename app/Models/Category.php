@@ -25,6 +25,11 @@ class Category extends Model
         return $this->hasOne(CategoryImage::class);
     }
 
+    public function imageName() {
+        $image = $this->image()->get()->first();
+        return $image->image_name;
+    }
+
     public static function allWithProducts() {
         $categories = Category::all();
         $categories_with_products = [];
@@ -42,6 +47,7 @@ class Category extends Model
             array_push($categories_with_products, [
                 "name" => $category_name,
                 "description" => $category_description,
+                "image" => "category_images/" . $cat->imageName(),
                 "products" => $products
             ]);
         }
@@ -58,7 +64,7 @@ class Category extends Model
         return [
             "category" => $this->category,
             "product_count" => $this->products()->count(),
-            "image" => "category_images/$this->image",
+            "image" => "category_images/" . $this->imageName(),
         ];
     }
 
@@ -70,11 +76,18 @@ class Category extends Model
             array_push($info, [
                 "category" => $category->category,
                 "description" => $category->description,
-                "image" => "category_images/$category->image",
+                "image" => "category_images/" . $category->imageName(),
                 "product_count" => $category->products()->count(),
             ]);
         }
         
         return $info;
+    }
+
+    public function delete() {
+        $image = $this->image()->get()->first();
+        $image->delete();
+        
+        parent::delete();
     }
 }
