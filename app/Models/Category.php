@@ -29,6 +29,7 @@ class Category extends Model
         foreach ($categories as $cat) {
             $products = $cat->products()->get();
             $category_name = $cat->category;
+            $category_description = $cat->description;
 
             foreach ($products as $pro) {
                 Product::setImages($pro);
@@ -37,6 +38,7 @@ class Category extends Model
 
             array_push($categories_with_products, [
                 "name" => $category_name,
+                "description" => $category_description,
                 "products" => $products
             ]);
         }
@@ -64,6 +66,7 @@ class Category extends Model
         foreach ($categories as $category) {
             array_push($info, [
                 "category" => $category->category,
+                "description" => $category->description,
                 "image" => "category_images/$category->image",
                 "product_count" => $category->products()->count(),
             ]);
