@@ -52,7 +52,7 @@ class CategoriesController extends Controller
 
     public static function update(Request $request) {
         $request->validate([
-            "category" => "required|unique:categories",
+            "category" => "required",
             "description" => "required|max:255",
         ]);
 
@@ -61,6 +61,16 @@ class CategoriesController extends Controller
         $category->category = $request->category;
         $category->description = $request->description;
 
+        if (isset($request->image)) {
+            $image_name = Str::random();
+            $image = new CategoryImage(["image_name" => $image_name]);
+            
+            $old_image = $category->image()->get()->first();
+            $old_image->delete();
+            
+            $category->image()->save($image);
+            $request->image->move("category_images", $image_name);
+        }
         
         $category->update();
 
