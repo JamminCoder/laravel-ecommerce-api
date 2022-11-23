@@ -87,6 +87,11 @@ class Category extends Model
     public function delete() {
         $image = $this->image()->get()->first();
         $image->delete();
+
+        $products = $this->products()->get();
+        foreach ($products as $product) {
+            $product->delete();
+        }
         
         parent::delete();
     }
