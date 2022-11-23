@@ -52,11 +52,12 @@ class CategoriesController extends Controller
 
     public static function update(Request $request) {
         $request->validate([
+            "target_category" => "required",
             "category" => "required",
             "description" => "required|max:255",
         ]);
 
-        $category = Category::firstWhere("category", $request->category);
+        $category = Category::firstWhere("category", $request->target_category);
 
         $category->category = $request->category;
         $category->description = $request->description;
