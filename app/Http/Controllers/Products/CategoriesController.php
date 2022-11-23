@@ -57,6 +57,12 @@ class CategoriesController extends Controller
             "description" => "required|max:255",
         ]);
 
+        // Protect this category being renamed to existing category
+        $category_exists = Category::where("category", $request->category)->get()->count();
+        if ($request->target_category !== $request->category && $category_exists) 
+            return "Cannot use that name";
+
+        
         $category = Category::firstWhere("category", $request->target_category);
 
         $category->category = $request->category;
