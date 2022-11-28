@@ -7,6 +7,7 @@ use App\Http\Controllers\OrdersController;
 use App\Http\Controllers\PayPalController;
 use App\Http\Controllers\Products\CategoriesController;
 use App\Http\Controllers\Products\ProductsController;
+use App\Http\Controllers\Content\HomepageSlideController;
 
 
 Route::post("/login", [AuthenticatedSessionController::class, 'store']);
@@ -32,6 +33,9 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::post("/categories/new", [CategoriesController::class, "new"]);
     Route::post("/categories/update/{category}", [CategoriesController::class, "update"]);
     Route::post("/categories/delete/{category}", [CategoriesController::class, "delete"]);
+
+    // Content management
+    Route::post("/content/slides/new", [HomepageSlideController::class, "new"]);
 });
 
 
