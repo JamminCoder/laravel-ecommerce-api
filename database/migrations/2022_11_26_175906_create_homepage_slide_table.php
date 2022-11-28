@@ -13,7 +13,7 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('homepage_slide', function (Blueprint $table) {
+        Schema::create('homepage_slides', function (Blueprint $table) {
             $table->id();
             $table->string("header")->nullable();
             $table->string("lead")->nullable();
@@ -28,6 +28,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('homepage_slide');
+        Schema::dropIfExists('homepage_slides');
     }
 };

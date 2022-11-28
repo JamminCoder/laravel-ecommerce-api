@@ -54,6 +54,9 @@ Route::get("/categories/info/all", [CategoriesController::class, "infoAll"]);
 Route::get("/products/sku/{sku}", [ProductsController::class, "getBySKU"]);
 
 
+// Slides
+Route::get("/content/slides/", [HomepageSlideController::class, "all"]);
+
 // Paypal
 Route::post("/orders/create", [OrdersController::class, "new"]);
 Route::post("/orders/{orderID}/capture", [PayPalController::class, "capturePayment"]);

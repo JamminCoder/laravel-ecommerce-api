@@ -4,7 +4,7 @@
 /public/storage
 /public/product_images/*
 /public/category_images/*
-/public/slides/*
+/public/slide_images/*
 /storage/*.key
 /vendor
 .env
