@@ -20,12 +20,14 @@ class ProductsController extends Controller
             "name" => "required|unique:products|max:64",
             "description" => "required|max:255",
             "price" => "required",
+            "tax_percent" => "required",
             "stock" => "required"
         ]);
 
         $name = $request->name;
         $description = $request->description;
         $price = $request->price;
+        $tax_percent = $request->tax_percent;
         $sku = Product::generateSKU($name);
         $stock = $request->stock;
         $categoryName = $request->category;
@@ -35,6 +37,7 @@ class ProductsController extends Controller
             "name" => $name,
             "description" => $description,
             "price" => $price,
+            "tax_percent" => $tax_percent,
             "sku" => Product::generateSKU($name),
             "stock" => $stock,
         ]);
@@ -55,6 +58,7 @@ class ProductsController extends Controller
             "name" => $name,
             "description" => $description,
             "price" => $price,
+            "tax_percent" => $tax_percent,
             "sku" => $sku,
             "stock" => $stock,
         ];
@@ -96,6 +100,10 @@ class ProductsController extends Controller
 
             $category->save();
             $product->category_id = $category->id;
+        }
+
+        if (isset($request->tax)) {
+            $product->tax_percent = $request->tax_percent;
         }
 
         $product->stock = $request->stock;
