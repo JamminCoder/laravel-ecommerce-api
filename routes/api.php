@@ -8,7 +8,7 @@ use App\Http\Controllers\PayPalController;
 use App\Http\Controllers\Products\CategoriesController;
 use App\Http\Controllers\Products\ProductsController;
 use App\Http\Controllers\Content\HomepageSlideController;
-
+use App\Http\Controllers\SquareController;
 
 Route::post("/login", [AuthenticatedSessionController::class, 'store']);
 
@@ -57,6 +57,16 @@ Route::get("/products/sku/{sku}", [ProductsController::class, "getBySKU"]);
 // Slides
 Route::get("/content/slides/", [HomepageSlideController::class, "all"]);
 
+
+// Square 
+Route::group(["prefix" => "square"], function () {
+    Route::get("/test", [SquareController::class, "testSquare"]);
+    Route::get("/orders/new", [SquareController::class, "createOrder"]);
+    Route::get("/catalog", [SquareController::class, "getCatalog"]);
+    Route::get("/catalog/info", [SquareController::class, "getCatalogInfo"]);
+});
+
+
 // Paypal
-Route::post("/orders/create", [OrdersController::class, "new"]);
-Route::post("/orders/{orderID}/capture", [PayPalController::class, "capturePayment"]);
+// Route::post("/orders/create", [OrdersController::class, "new"]);
+// Route::post("/orders/{orderID}/capture", [PayPalController::class, "capturePayment"]);
