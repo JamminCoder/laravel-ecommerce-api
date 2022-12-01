@@ -8,7 +8,7 @@ use Square\SquareClient;
 use Square\Environment;
 use Square\Exceptions\ApiException;
 use Square\Models as SquareModels;
-use Square\Models\SearchCatalogObjectsRequest;
+use Illuminate\Support\Str;
 
 class SquareController extends Controller
 {
@@ -78,6 +78,53 @@ class SquareController extends Controller
         $client = self::client();
 
         $api_response = $client->getCatalogApi()->retrieveCatalogObject($objectID);
+
+        if ($api_response->isSuccess()) {
+            return $api_response->getResult();
+        } else {
+            return $api_response->getErrors();
+        }
+    }
+
+    public function orderCheckout() {
+        $client = self::client();
+        $line_items = [];
+
+        $order_items = [
+            // Each item will be extracted from the order request
+            [
+                "name" => "Test Name",
+                "qty" => 2,
+                "amount" => 30000, // amount in cents (when USD)
+                "note" => "Thank you!",
+                "currency" => "USD",
+            ]
+        ];
+
+        foreach ($order_items as $item) {
+            $base_price_money = new \Square\Models\Money();
+            $base_price_money->setAmount($item["amount"]);
+            $base_price_money->setCurrency($item["currency"]);
+
+            $order_line_item = new \Square\Models\OrderLineItem($item["qty"]);
+            $order_line_item->setName($item["name"]);
+            $order_line_item->setNote($item["note"]);
+            $order_line_item->setBasePriceMoney($base_price_money);
+
+            array_push($line_items, $order_line_item);
+        }
+
+
+
+        $order = new SquareModels\Order(env('LOCATION_ID'));
+        $order->setLineItems($line_items);
+
+        $body = new SquareModels\CreatePaymentLinkRequest();
+        $body->setIdempotencyKey(Str::random());
+        $body->setOrder($order);
+
+        $api_response = $client->getCheckoutApi()->createPaymentLink($body);
+
 
         if ($api_response->isSuccess()) {
             return $api_response->getResult();

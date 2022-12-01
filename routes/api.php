@@ -60,6 +60,7 @@ Route::get("/content/slides/", [HomepageSlideController::class, "all"]);
 
 // Square 
 Route::group(["prefix" => "square"], function () {
+    Route::get("/order-checkout", [SquareController::class, "orderCheckout"]);
     Route::get("/test", [SquareController::class, "testSquare"]);
     Route::get("/catalog", [SquareController::class, "getCatalog"]);
     Route::get("/catalog/{object_id}", [SquareController::class, "getObject"]);
