@@ -36,6 +36,7 @@ Route::middleware('auth:sanctum')->group(function () {
 
     // Content management
     Route::post("/content/slides/new", [HomepageSlideController::class, "new"]);
+    Route::post("/content/slides/edit/{slide_id}", [HomepageSlideController::class, "update"]);
 });
 
 
@@ -54,7 +55,7 @@ Route::get("/categories/info/all", [CategoriesController::class, "infoAll"]);
 Route::get("/products/sku/{sku}", [ProductsController::class, "getBySKU"]);
 
 
-// Slides
+// Content
 Route::get("/content/slides/", [HomepageSlideController::class, "all"]);
 
 
