@@ -62,6 +62,11 @@ class HomepageSlideController extends Controller
 
 
     public function update(Request $request) {
+        $request->validate([
+            "image.*" => "image|mimes:png,jpg,jpeg|max:5120",
+            "image.*files" => "image|mimes:png,jpg,jpeg|max:5120",
+        ]);
+
         if (!isset($request->slide_id)) return "Slide ID is required";
 
         $slide = HomepageSlide::firstWhere("id", $request->slide_id);
@@ -78,9 +83,23 @@ class HomepageSlideController extends Controller
         ? $slide->buttons = $request->buttons
         : $slide->buttons = $slide->buttons;
 
+        if (isset($request->image)) {
+            $image_name = Str::random();
 
+            $old_image = $slide->image()->get()->first();
+            $old_image->delete();
+            $slide->image()->save(new HomepageSlideImage(["image_name" => $image_name]));
+            $request->image->move("slide_images", $image_name);
+        }
+        
         $slide->save();
 
         return "Slide saved";
+    }
+
+    public function delete(Request $request) {
+        if (!isset($request->slide_id)) return "Slide ID is required";
+
+        HomepageSlide::firstWhere("id", $request->slide_id)->delete();
     }
 }
