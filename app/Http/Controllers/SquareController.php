@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Product;
 use Illuminate\Http\Request;
 
 use Square\SquareClient;
@@ -61,63 +62,48 @@ class SquareController extends Controller
         }
     }
 
-    public function getCatalog() {
+
+    public function orderCheckout(Request $request) {
+
+        // {"products": ["PRODUCT_SKU_2022", "etc..."]}
+        $products_json = json_decode($request->products_json, true);
+
         $client = self::client();
-        $catalogApi = $client->getCatalogApi();
-
-        $apiResponse = $catalogApi->listCatalog();
-
-        if ($apiResponse->isSuccess()) {
-            return $apiResponse->getResult();
-        } else {
-            return $apiResponse->getErrors();
-        }
-    }
-
-    public static function getObject($objectID) {
-        $client = self::client();
-
-        $api_response = $client->getCatalogApi()->retrieveCatalogObject($objectID);
-
-        if ($api_response->isSuccess()) {
-            return $api_response->getResult();
-        } else {
-            return $api_response->getErrors();
-        }
-    }
-
-    public function orderCheckout() {
-        $client = self::client();
-        $line_items = [];
-
-        $order_items = [
-            // Each item will be extracted from the order request
-            [
-                "name" => "Test Name",
-                "qty" => 2,
-                "amount" => 30000, // amount in cents (when USD)
-                "note" => "Thank you!",
+        
+        // Get product SKUs from request and query database for product information
+        // Store product info in $order_items
+        $order_items = [];
+        foreach ($products_json["products"] as $sku) {
+            $product = Product::firstWhere("sku", $sku);
+            error_log($product);
+            array_push($order_items, [
+                "name" => $product->name,
+                "qty" => 1,
+                "amount" => $product->price,
                 "currency" => "USD",
-            ]
-        ];
+            ]);
+        }
 
+        $line_items = [];
         foreach ($order_items as $item) {
+            // Create new line items, store in $line_items
+
             $base_price_money = new \Square\Models\Money();
             $base_price_money->setAmount($item["amount"]);
             $base_price_money->setCurrency($item["currency"]);
 
             $order_line_item = new \Square\Models\OrderLineItem($item["qty"]);
             $order_line_item->setName($item["name"]);
-            $order_line_item->setNote($item["note"]);
+            isset($item["note"]) ? $order_line_item->setNote($item["note"]): "";
             $order_line_item->setBasePriceMoney($base_price_money);
 
             array_push($line_items, $order_line_item);
         }
 
 
-
-        $order = new SquareModels\Order(env('LOCATION_ID'));
-        $order->setLineItems($line_items);
+        
+        $order = new SquareModels\Order(env('LOCATION_ID')); // New order
+        $order->setLineItems($line_items); // Set order info
 
         $body = new SquareModels\CreatePaymentLinkRequest();
         $body->setIdempotencyKey(Str::random());

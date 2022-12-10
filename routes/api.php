@@ -63,13 +63,7 @@ Route::get("/content/slides/", [HomepageSlideController::class, "all"]);
 // Square 
 Route::group(["prefix" => "square"], function () {
     Route::get("/order-checkout", [SquareController::class, "orderCheckout"]);
+    Route::post("/order-checkout", [SquareController::class, "orderCheckout"]);
+
     Route::get("/test", [SquareController::class, "testSquare"]);
-    Route::get("/catalog", [SquareController::class, "getCatalog"]);
-    Route::get("/catalog/{object_id}", [SquareController::class, "getObject"]);
-    Route::get("/catalog/info", [SquareController::class, "getCatalogInfo"]);
 });
-
-
-// Paypal
-// Route::post("/orders/create", [OrdersController::class, "new"]);
-// Route::post("/orders/{orderID}/capture", [PayPalController::class, "capturePayment"]);
