@@ -5,6 +5,7 @@
 /public/product_images/*
 /public/category_images/*
 /public/slide_images/*
+/public/shop_header_image/*
 /storage/*.key
 /vendor
 .env
