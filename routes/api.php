@@ -3,11 +3,10 @@
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Auth\AuthenticatedSessionController;
-use App\Http\Controllers\OrdersController;
-use App\Http\Controllers\PayPalController;
 use App\Http\Controllers\Products\CategoriesController;
 use App\Http\Controllers\Products\ProductsController;
 use App\Http\Controllers\Content\HomepageSlideController;
+use App\Http\Controllers\Content\ShopHeaderController;
 use App\Http\Controllers\SquareController;
 
 Route::post("/login", [AuthenticatedSessionController::class, 'store']);
@@ -38,6 +37,7 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::post("/content/slides/new", [HomepageSlideController::class, "new"]);
     Route::post("/content/slides/edit/{slide_id}", [HomepageSlideController::class, "update"]);
     Route::post("/content/slides/delete/{slide_id}", [HomepageSlideController::class, "delete"]);
+    Route::post("/content/shop-header/update", [ShopHeaderController::class, "update"]);
 });
 
 
@@ -58,6 +58,7 @@ Route::get("/products/sku/{sku}", [ProductsController::class, "getBySKU"]);
 
 // Content
 Route::get("/content/slides/", [HomepageSlideController::class, "all"]);
+Route::get("/content/shop-header", [ShopHeaderController::class, "get"]);
 
 
 // Square 
