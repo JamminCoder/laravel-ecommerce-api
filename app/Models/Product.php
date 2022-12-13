@@ -17,7 +17,7 @@ class Product extends Model
         "name",
         "description",
         "price",
-        "tax",
+        "tax_percent",
         "sku",
         "stock"
     ];
@@ -87,5 +87,16 @@ class Product extends Model
     public function save(array $options = []) {
         unset($this->images);
         parent::save($options);
+    }
+
+    public function getTax() {
+        return  $this->price * ($this->tax_percent / 100);
+    }
+
+    public function totalPriceCents() {
+        $total = $this->price + $this->getTax();
+        error_log($this->getTax());
+        error_log($total);
+        return $total * 100;
     }
 }

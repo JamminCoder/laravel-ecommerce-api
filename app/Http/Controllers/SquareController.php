@@ -89,7 +89,7 @@ class SquareController extends Controller
             array_push($order_items, [
                 "name" => $real_item->name, // name of the REAL item!
                 "qty" => $item["count"], // The user can control this.
-                "amount" => $real_item->price, // use the price from the REAL item!
+                "amount" => $real_item->totalPriceCents(), // use the price from the REAL item!
                 "currency" => "USD",
             ]);
         }
