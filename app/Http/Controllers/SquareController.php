@@ -64,22 +64,32 @@ class SquareController extends Controller
 
 
     public function orderCheckout(Request $request) {
-
-        // {"products": ["PRODUCT_SKU_2022", "etc..."]}
-        $products_json = json_decode($request->products_json, true);
+        /* Items JSON looks like this:
+        {
+            "items": [
+                {
+                    "sku",
+                    "count",
+                    "etc.."
+                }
+            ]
+        }
+        */
+        $items_json = json_decode($request->items_json, true);
 
         $client = self::client();
         
-        // Get product SKUs from request and query database for product information
-        // Store product info in $order_items
+        
         $order_items = [];
-        foreach ($products_json["products"] as $sku) {
-            $product = Product::firstWhere("sku", $sku);
-            error_log($product);
+        foreach ($items_json["items"] as $item) {
+            // Get product SKUs from request and query database for product information
+            // Store product info in $order_items
+            
+            $real_item = Product::firstWhere("sku", $item["sku"]); // The item from the DB, not from the request
             array_push($order_items, [
-                "name" => $product->name,
-                "qty" => 1,
-                "amount" => $product->price,
+                "name" => $real_item->name, // name of the REAL item!
+                "qty" => $item["count"], // The user can control this.
+                "amount" => $real_item->price, // use the price from the REAL item!
                 "currency" => "USD",
             ]);
         }
