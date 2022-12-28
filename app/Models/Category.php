@@ -30,11 +30,13 @@ class Category extends Model
         return $image->image_name;
     }
 
-    public static function allWithProducts() {
+    public static function allWithProducts($limit=null) {
         $categories = Category::all();
         $categories_with_products = [];
 
+        $i = 1;
         foreach ($categories as $cat) {
+            
             $products = $cat->products()->get();
             $category_name = $cat->category;
             $category_description = $cat->description;
@@ -50,6 +52,9 @@ class Category extends Model
                 "image" => "category_images/" . $cat->imageName(),
                 "products" => $products
             ]);
+
+            if ($limit && $i >= $limit) break;
+            $i++;
         }
 
         return $categories_with_products;

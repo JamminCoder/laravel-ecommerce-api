@@ -96,8 +96,8 @@ class CategoriesController extends Controller
         return $category;
     }
 
-    public static function allCategoriesWithProducts() {
-        return Category::allWithProducts();
+    public static function allCategoriesWithProducts(Request $request) {
+        return Category::allWithProducts(limit: isset($request->limit) ? $request->limit: null);
     }
 
     public static function info(Request $request) {
