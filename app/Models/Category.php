@@ -62,6 +62,12 @@ class Category extends Model
 
     public static function getByName($name) {
         $category = Category::firstWhere("category", $name);
+        
+        foreach ($category->products as $pro) {
+            Product::setImages($pro);
+            $pro->category = $category->category;
+        }
+
         return $category;
     }
 
