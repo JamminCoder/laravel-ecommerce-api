@@ -16,19 +16,20 @@ class HomepageInfoController extends Controller
         
         $info = self::get();
         
-        if ($info) {
-            $info->header = $request->header;
-            $info->lead = $request->lead;
-            $info->update();
-
-        } else {
+        if (!$info) {            
             $info = new HomepageInfo([
                 "header" => $request->header,
                 "lead" => $request->lead,
             ]);
-
+    
             $info->save();
+            return "Created info";
         }
+
+        $info->header = $request->header;
+        $info->lead = $request->lead;
+        $info->update();
+        return "Updated info";
     }
 
     public static function get() {

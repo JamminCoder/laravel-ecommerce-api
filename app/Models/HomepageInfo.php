@@ -10,6 +10,7 @@ class HomepageInfo extends Model
     use HasFactory;
 
     public $timestamps = false;
+    public $table = "homepage_info";
 
     public $fillable = [
         "header",
