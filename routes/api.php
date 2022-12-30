@@ -49,7 +49,7 @@ Route::middleware('auth:sanctum')->group(function () {
 ***************/
 
 // Categories
-Route::get("/categories/all/products", [CategoriesController::class, "allCategoriesWithProducts"]);
+Route::get("/categories/all", [CategoriesController::class, "allCategoriesWithProducts"]);
 Route::get("/categories/{category}", [CategoriesController::class, "productsFromCategory"]);
 Route::get("/categories/{category}/info", [CategoriesController::class, "info"]);
 Route::get("/categories/info/all", [CategoriesController::class, "infoAll"]);
