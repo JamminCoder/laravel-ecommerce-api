@@ -3,6 +3,7 @@
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Auth\AuthenticatedSessionController;
+use App\Http\Controllers\Content\HomepageInfoController;
 use App\Http\Controllers\Products\CategoriesController;
 use App\Http\Controllers\Products\ProductsController;
 use App\Http\Controllers\Content\HomepageSlideController;
@@ -38,6 +39,8 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::post("/content/slides/edit/{slide_id}", [HomepageSlideController::class, "update"]);
     Route::post("/content/slides/delete/{slide_id}", [HomepageSlideController::class, "delete"]);
     Route::post("/content/shop-header/update", [ShopHeaderController::class, "update"]);
+
+    Route::post("/content/homepage-info/update", [HomepageInfoController::class, "update"]);
 });
 
 
@@ -59,6 +62,7 @@ Route::get("/products/sku/{sku}", [ProductsController::class, "getBySKU"]);
 // Content
 Route::get("/content/slides/", [HomepageSlideController::class, "all"]);
 Route::get("/content/shop-header", [ShopHeaderController::class, "get"]);
+Route::get("/content/homepage-info", [HomepageInfoController::class, "get"]);
 
 
 // Square 
