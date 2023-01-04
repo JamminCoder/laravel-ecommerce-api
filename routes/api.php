@@ -3,12 +3,14 @@
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Auth\AuthenticatedSessionController;
+use App\Http\Controllers\Auth\EmailVerificationNotificationController;
 use App\Http\Controllers\Content\HomepageInfoController;
 use App\Http\Controllers\Products\CategoriesController;
 use App\Http\Controllers\Products\ProductsController;
 use App\Http\Controllers\Content\HomepageSlideController;
 use App\Http\Controllers\Content\ShopHeaderController;
 use App\Http\Controllers\SquareController;
+use App\Http\Controllers\Auth\VerifyEmailController;
 
 Route::post("/login", [AuthenticatedSessionController::class, 'store']);
 
@@ -41,6 +43,11 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::post("/content/shop-header/update", [ShopHeaderController::class, "update"]);
 
     Route::post("/content/homepage-info/update", [HomepageInfoController::class, "update"]);
+
+
+    // Admin account management
+    Route::get("/admin/verification-status", [VerifyEmailController::class, "isVerified"]);
+    Route::get("/admin/verify-email", [EmailVerificationNotificationController::class, "store"]);
 });
 
 

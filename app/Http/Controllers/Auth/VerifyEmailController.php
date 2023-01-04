@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
 use App\Providers\RouteServiceProvider;
+use Illuminate\Http\Request;
 use Illuminate\Auth\Events\Verified;
 use Illuminate\Foundation\Auth\EmailVerificationRequest;
 
@@ -26,5 +27,10 @@ class VerifyEmailController extends Controller
         }
 
         return redirect()->intended(RouteServiceProvider::HOME.'?verified=1');
+    }
+
+    public function isVerified(Request $request) {
+        $isVerified = $request->user()->email_verified_at === null ? false: true;
+        return ["is_verified" => $isVerified];
     }
 }
