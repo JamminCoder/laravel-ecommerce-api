@@ -4,7 +4,9 @@ namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Auth\Events\PasswordReset;
+use Illuminate\Foundation\Auth\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Password;
 use Illuminate\Support\Str;
@@ -61,5 +63,22 @@ class NewPasswordController extends Controller
                     ? redirect()->route('login')->with('status', __($status))
                     : back()->withInput($request->only('email'))
                             ->withErrors(['email' => __($status)]);
+    }
+
+    public function update(Request $request) {
+        $request->validate([
+            "current_password" => "required",
+            'password' => ['required', 'confirmed', Rules\Password::defaults()],
+        ]);
+
+        if (!Hash::check($request->current_password, Auth::user()->getAuthPassword())) return "Please enter your current password";
+
+        $userID = Auth::user()->getAuthIdentifier();
+        $user = User::firstWhere("id", $userID);
+        $user->password = Hash::make($request->password);
+
+        $user->save();
+
+        return "OK";
     }
 }
