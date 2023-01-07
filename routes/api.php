@@ -5,6 +5,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Auth\AuthenticatedSessionController;
 use App\Http\Controllers\Auth\EmailVerificationNotificationController;
 use App\Http\Controllers\Auth\NewPasswordController;
+use App\Http\Controllers\Auth\NewEmailController;
 use App\Http\Controllers\Content\HomepageInfoController;
 use App\Http\Controllers\Products\CategoriesController;
 use App\Http\Controllers\Products\ProductsController;
@@ -50,6 +51,7 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::get("/admin/verification-status", [VerifyEmailController::class, "isVerified"]);
     Route::get("/admin/verify-email", [EmailVerificationNotificationController::class, "store"]);
     Route::post("/admin/password-update", [NewPasswordController::class, "update"]);
+    Route::post("/admin/email-update", [NewEmailController::class, "update"]);
 });
 
 
