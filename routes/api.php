@@ -13,6 +13,7 @@ use App\Http\Controllers\Content\HomepageSlideController;
 use App\Http\Controllers\Content\ShopHeaderController;
 use App\Http\Controllers\SquareController;
 use App\Http\Controllers\Auth\VerifyEmailController;
+use App\Http\Controllers\Content\CabinSectionController;
 
 Route::post("/login", [AuthenticatedSessionController::class, 'store']);
 
@@ -45,6 +46,7 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::post("/content/shop-header/update", [ShopHeaderController::class, "update"]);
 
     Route::post("/content/homepage-info/update", [HomepageInfoController::class, "update"]);
+    Route::post("/content/cabin-section/update", [CabinSectionController::class, "update"]);
 
 
     // Admin account management
