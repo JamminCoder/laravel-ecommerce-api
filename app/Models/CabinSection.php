@@ -8,6 +8,8 @@ use Illuminate\Database\Eloquent\Model;
 class CabinSection extends Model
 {
     use HasFactory;
+    public $timestamps = false;
+    public $table = "cabin_section";
 
     protected $fillable = [
         "header",

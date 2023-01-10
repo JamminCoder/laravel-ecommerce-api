@@ -14,6 +14,7 @@ return new class extends Migration
     public function up()
     {
         Schema::create('cabin_section', function (Blueprint $table) {
+            $table->id();
             $table->string("image_path");
             $table->string("header");
             $table->string("lead")->nullable();
