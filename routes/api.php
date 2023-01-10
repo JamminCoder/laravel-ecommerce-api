@@ -47,6 +47,7 @@ Route::middleware('auth:sanctum')->group(function () {
 
     Route::post("/content/homepage-info/update", [HomepageInfoController::class, "update"]);
     Route::post("/content/cabin-section/update", [CabinSectionController::class, "update"]);
+    Route::get("/content/cabin-section", [CabinSectionController::class, "get"]);
 
 
     // Admin account management

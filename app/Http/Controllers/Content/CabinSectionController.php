@@ -12,7 +12,7 @@ class CabinSectionController extends Controller
 {
     public function update(Request $request) {
         $request->validate([
-            "image.*" => "required|image|mimes:png,jpg,jpeg|max:5120",
+            "image.*" => "required|image|mimes:png,jpg,jpeg,webp|max:5120",
             "image.*files" => "required|image|mimes:png,jpg,jpeg|max:5120",
             "header" => "required|max:32",
             "lead" => "required|max:255",
@@ -59,5 +59,9 @@ class CabinSectionController extends Controller
         $cabin_section->save();
 
         return "Updated cabin section";
+    }
+
+    public function get() {
+        return CabinSection::first();
     }
 }
