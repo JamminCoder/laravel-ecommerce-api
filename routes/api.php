@@ -47,7 +47,6 @@ Route::middleware('auth:sanctum')->group(function () {
 
     Route::post("/content/homepage-info/update", [HomepageInfoController::class, "update"]);
     Route::post("/content/cabin-section/update", [CabinSectionController::class, "update"]);
-    Route::get("/content/cabin-section", [CabinSectionController::class, "get"]);
 
 
     // Admin account management
@@ -77,7 +76,7 @@ Route::get("/products/sku/{sku}", [ProductsController::class, "getBySKU"]);
 Route::get("/content/slides/", [HomepageSlideController::class, "all"]);
 Route::get("/content/shop-header", [ShopHeaderController::class, "get"]);
 Route::get("/content/homepage-info", [HomepageInfoController::class, "get"]);
-
+Route::get("/content/cabin-section", [CabinSectionController::class, "get"]);
 
 // Square 
 Route::group(["prefix" => "square"], function () {
