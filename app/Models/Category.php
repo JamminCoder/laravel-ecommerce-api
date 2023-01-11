@@ -74,6 +74,7 @@ class Category extends Model
     public function info() {
         return [
             "category" => $this->category,
+            "description" => $this->description,
             "product_count" => $this->products()->count(),
             "image" => "category_images/" . $this->imageName(),
         ];
