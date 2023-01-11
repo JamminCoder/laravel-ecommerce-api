@@ -9,13 +9,9 @@ class CabinSection extends Model
 {
     use HasFactory;
     public $timestamps = false;
-    public $table = "cabin_section";
+    public $table = "cabin_section_iframe";
 
     protected $fillable = [
-        "header",
-        "lead",
-        "image_path",
-        "link_text",
-        "href",
+        "iframe_url"
     ];
 }

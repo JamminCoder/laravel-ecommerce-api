@@ -13,13 +13,9 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('cabin_section', function (Blueprint $table) {
+        Schema::create('cabin_section_iframe', function (Blueprint $table) {
             $table->id();
-            $table->string("image_path");
-            $table->string("header");
-            $table->string("lead")->nullable();
-            $table->string("link_text")->default("Rent a Cabin");
-            $table->string("href");
+            $table->string("iframe_url");
         });
     }
 
@@ -30,6 +26,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::drop('cabin_section');
+        Schema::drop('cabin_section_iframe');
     }
 };

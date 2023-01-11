@@ -12,30 +12,13 @@ class CabinSectionController extends Controller
 {
     public function update(Request $request) {
         $request->validate([
-            "image.*" => "required|image|mimes:png,jpg,jpeg,webp|max:5120",
-            "image.*files" => "required|image|mimes:png,jpg,jpeg|max:5120",
-            "header" => "required|max:32",
-            "lead" => "required|max:255",
-            "link_text" => "required",
-            "href" => "required",
+            "iframe_url" => "required"
         ]);
 
         
         if (!CabinSection::first()) {
-            // Create new cabin section
-
-            $image_name = Str::random();
-
-            $cabin_section = new CabinSection([
-                "header" => $request->header,
-                "lead" => $request->lead,
-                "link_text" => $request->link_text,
-                "href" => $request->href,
-                "image_path" => "images/$image_name",
-            ]);
-            
-            $request->image->move("images", $image_name);
-
+            $cabin_section = new CabinSection();
+            $cabin_section->iframe_url = $request->iframe_url;
             $cabin_section->save();
             
             return "Created new cabin section";
@@ -43,25 +26,14 @@ class CabinSectionController extends Controller
 
         // Update the cabin section
         $cabin_section = CabinSection::first();
-
-        $cabin_section->header = $request->header;
-        $cabin_section->lead = $request->lead;
-        $cabin_section->link_text = $request->link_text;
-        $cabin_section->href = $request->href;
-
-        $old_image_path = $cabin_section->image_path;
-        FilesController::deletePublic($old_image_path);
-        
-        $image_name = Str::random();
-        $cabin_section->image_path = "images/$image_name";
-        $request->image->move("images", $image_name);
-
+        $cabin_section->iframe_url = $request->iframe_url;
         $cabin_section->save();
 
         return "Updated cabin section";
     }
 
     public function get() {
-        return CabinSection::first();
+        $result = CabinSection::first();
+        return $result ? $result->iframe_url : null;
     }
 }
