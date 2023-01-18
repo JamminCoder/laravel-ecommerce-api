@@ -12,6 +12,20 @@ use App\Models\Category;
 
 class ProductsController extends Controller
 {
+    /**
+     * Creates new Product
+     * 
+     * @param Request $request  
+     * Request parameters {  
+     *      images: image file(s),  
+     *      category: string,  
+     *      name: string,  
+     *      description: string,  
+     *      price: number,  
+     *      tax_percent: number,  
+     *      stock: number,  
+     * }
+     */
     public static function new(Request $request) {
         $request->validate([
             "images.*" => "required|image|mimes:png,jpg,jpeg",
@@ -64,6 +78,19 @@ class ProductsController extends Controller
         ];
     }
 
+    /**
+     * Updates product using SKU from $request
+     * 
+     * @param Request $request  
+     * Request parameters {  
+     *      images: image file(s),  
+     *      category: string,  
+     *      name: string,  
+     *      description: string,    
+     *      tax_percent: number,  
+     *      stock: number,  
+     * } 
+     */
     public static function update(Request $request) {
         $request->validate([
             "images.*" => "image|mimes:png,jpg,jpeg",
@@ -113,6 +140,14 @@ class ProductsController extends Controller
         return "Updated product";
     }
 
+    /**
+     * Delete a product using SKU from request.
+     * 
+     * @param Request $request  
+     * Request parameters {  
+     *      sku: string
+     * }
+     */
     public static function delete(Request $request) {
         if (!isset($request->sku)) 
             return "Please provide the SKU at the end of the URL: /api/products/delete/sku/{SKU}";
@@ -130,6 +165,14 @@ class ProductsController extends Controller
         
     }
 
+    /**
+     * Get a product using SKU from request.
+     * 
+     * @param Request $request  
+     * Request parameters {  
+     *      sku: string  
+     * }
+     */
     public static function getBySKU(Request $request) {
         if (!isset($request->sku)) 
             return "Please provide the SKU at the end of the URL: /api/products/sku/{SKU}";
@@ -140,6 +183,12 @@ class ProductsController extends Controller
         return Product::setImages($product);
     }
 
+    /**
+     * Save image names to Product object
+     * 
+     * @param Product $product
+     * @param array $imageNames
+     */
     private static function saveImagesToProduct($product, $imageNames) {
         foreach ($imageNames as $imageName) {
             $productImage = new ProductImage([
@@ -150,6 +199,11 @@ class ProductsController extends Controller
         }
     }
 
+    /**
+     * Decreases stock of products in $product_skus
+     * 
+     * @param array $product_skus
+     */
     public static function removeStock($product_skus) {
         foreach ($product_skus as $sku) {
             $product = Product::firstWhere("sku", $sku);
