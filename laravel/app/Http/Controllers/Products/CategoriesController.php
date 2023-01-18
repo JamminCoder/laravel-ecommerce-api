@@ -10,6 +10,13 @@ use Illuminate\Support\Str;
 
 class CategoriesController extends Controller
 {
+    /**
+     * Delete category by name.  
+     * @param Request $request
+     * Request parameters {  
+     *      category: string  
+     * }
+     */
     public static function delete(Request $request) {
         if (!isset($request->category))
             return "Requires a category name to delete";
@@ -27,6 +34,16 @@ class CategoriesController extends Controller
         return "Deleted category";
     }
 
+
+    /**
+     * Creates a new category.  
+     * @param Request $request  
+     * Request parameters {  
+     *      category: string,  
+     *      description: string,  
+     *      image: image file  
+     * }
+     */
     public static function new(Request $request) {
         $request->validate([
             "category" => "required|unique:categories",
@@ -50,6 +67,15 @@ class CategoriesController extends Controller
         return "Created new category";
     }
 
+    /**
+     * Updates a category.  
+     * @param Request $request  
+     * Request parameters {  
+     *      target_category: string,  
+     *      category: string,  
+     *      description: string,  
+     * }
+     */
     public static function update(Request $request) {
         $request->validate([
             "target_category" => "required",
@@ -84,6 +110,15 @@ class CategoriesController extends Controller
         return "Updated new category";
     }
 
+    /**
+     * Gets category data by name.
+     * @param Request $request  
+     * Request object {  
+     *      category: string,  
+     * }
+     * 
+     * @return Category  Category with image and products
+     */
     public static function productsFromCategory(Request $request) {
         if (!isset($request->category))
             return "No category set";
@@ -96,10 +131,32 @@ class CategoriesController extends Controller
         return $category;
     }
 
+    /**
+     * Gets all categories with product data
+     * @param Request $request
+     * Request object {  
+     *      limit: number || null  
+     * }
+     * 
+     * @return array<Category>
+     */
     public static function allCategoriesWithProducts(Request $request) {
         return Category::allWithProducts(limit: isset($request->limit) ? $request->limit: null);
     }
 
+    /**
+     * @param Request $request
+     * Request object {  
+     *      category: string  
+     * }
+     * 
+     * @return array[[  
+     *      "name": string,  
+     *      "description": string,  
+     *      "product_count": string,  
+     *      "image" => string,  
+     *    ]]
+     */
     public static function info(Request $request) {
         if (!isset($request->category))
             return "No category set";
@@ -109,6 +166,15 @@ class CategoriesController extends Controller
         return $category->info();
     }
 
+    /**
+     * Gets all of the categories' info.
+     * @return array[  
+     *      "name": string,  
+     *      "description": string,  
+     *      "product_count": string,  
+     *      "image" => string,  
+     *    ]
+     */
     public static function infoAll() {
         // Returns info about the categories like name and product count
         return Category::infoAll();
