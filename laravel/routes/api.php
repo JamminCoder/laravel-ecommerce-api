@@ -13,6 +13,7 @@ use App\Http\Controllers\Content\HomepageSlideController;
 use App\Http\Controllers\Content\ShopHeaderController;
 use App\Http\Controllers\SquareController;
 use App\Http\Controllers\Auth\VerifyEmailController;
+use App\Http\Controllers\Content\AboutPageController;
 use App\Http\Controllers\Content\CabinSectionController;
 
 Route::post("/login", [AuthenticatedSessionController::class, 'store']);
@@ -47,6 +48,7 @@ Route::middleware('auth:sanctum')->group(function () {
 
     Route::post("/content/homepage-info/update", [HomepageInfoController::class, "update"]);
     Route::post("/content/cabin-section/update", [CabinSectionController::class, "update"]);
+    Route::post("/content/about-page/update", [AboutPageController::class, "update"]);
 
 
     // Admin account management
@@ -77,6 +79,7 @@ Route::get("/content/slides/", [HomepageSlideController::class, "all"]);
 Route::get("/content/shop-header", [ShopHeaderController::class, "get"]);
 Route::get("/content/homepage-info", [HomepageInfoController::class, "get"]);
 Route::get("/content/cabin-section", [CabinSectionController::class, "get"]);
+Route::get("/content/about-page", [AboutPageController::class, "get"]);
 
 // Square 
 Route::group(["prefix" => "square"], function () {
