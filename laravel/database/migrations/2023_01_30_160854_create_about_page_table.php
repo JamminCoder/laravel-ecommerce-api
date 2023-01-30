@@ -14,8 +14,9 @@ return new class extends Migration
     public function up()
     {
         Schema::create('about_page', function (Blueprint $table) {
+            $table->id();
             $table->string("header")->default("*About Page Header*");
-            $table->longText("body")->default("Enter a description of the website here.");
+            $table->longText("body");
         });
     }
 
