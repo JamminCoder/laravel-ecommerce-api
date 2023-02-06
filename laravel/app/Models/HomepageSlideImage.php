@@ -22,7 +22,7 @@ class HomepageSlideImage extends Model
     }
 
     public function path() {
-        return "/slide_images/" . $this->image_name;
+        return "/images/" . $this->image_name;
     }
 
     public function delete() {

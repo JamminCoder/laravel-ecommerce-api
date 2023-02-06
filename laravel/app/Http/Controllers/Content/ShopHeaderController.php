@@ -26,7 +26,7 @@ class ShopHeaderController extends Controller
         $shop_header = new ShopHeader([
             "header" => $request->header_text,
             "lead" => isset($request->lead_text) ? $request->lead_text : "",
-            "image_path" => "shop_header_images/$image_name",
+            "image_path" => "images/$image_name",
         ]);
 
         $shop_header->save();

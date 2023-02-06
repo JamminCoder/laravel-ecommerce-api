@@ -9,7 +9,7 @@ class ShopHeader extends Model
 {
     use HasFactory;
 
-    const IMAGE_DIR = "shop_header_image";
+    const IMAGE_DIR = "images";
     
     public $table = "shop_header";
 

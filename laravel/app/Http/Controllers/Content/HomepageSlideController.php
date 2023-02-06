@@ -50,7 +50,7 @@ class HomepageSlideController extends Controller
 
 
         
-        $request->image->move("slide_images", $image_name);
+        $request->image->move("images", $image_name);
 
         return [
             "header" => $header,
@@ -89,7 +89,7 @@ class HomepageSlideController extends Controller
             $old_image = $slide->image()->get()->first();
             $old_image->delete();
             $slide->image()->save(new HomepageSlideImage(["image_name" => $image_name]));
-            $request->image->move("slide_images", $image_name);
+            $request->image->move("images", $image_name);
         }
         
         $slide->save();
