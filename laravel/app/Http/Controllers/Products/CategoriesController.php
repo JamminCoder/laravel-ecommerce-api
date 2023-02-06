@@ -62,7 +62,7 @@ class CategoriesController extends Controller
         $image_name = Str::random();
         $image = new CategoryImage(["image_name" => $image_name]);
         $category->image()->save($image);
-        $request->image->move("category_images", $image_name);
+        $request->image->move("images", $image_name);
 
         return "Created new category";
     }
@@ -102,7 +102,7 @@ class CategoriesController extends Controller
             $old_image->delete();
             
             $category->image()->save($image);
-            $request->image->move("category_images", $image_name);
+            $request->image->move("images", $image_name);
         }
         
         $category->update();
@@ -127,7 +127,7 @@ class CategoriesController extends Controller
         $category->products = $category->products()->get();
         Product::setImages($category->products);
 
-        $category->image = "category_images/" . $category->imageName();
+        $category->image = "images/" . $category->imageName();
         return $category;
     }
 

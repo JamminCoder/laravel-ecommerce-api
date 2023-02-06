@@ -22,7 +22,7 @@ class ProductImage extends Model
     }
 
     public function path() {
-        return "/product_images/" . $this->image_name;
+        return "/images/" . $this->image_name;
     }
 
     public function delete() {

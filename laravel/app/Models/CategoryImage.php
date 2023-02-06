@@ -22,7 +22,7 @@ class CategoryImage extends Model
     }
 
     public function path() {
-        return "/category_images/" . $this->image_name;
+        return "/images/" . $this->image_name;
     }
 
     public function delete() {

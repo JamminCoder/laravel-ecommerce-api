@@ -64,7 +64,7 @@ class ProductsController extends Controller
         $category->products()->save($product);
         
         
-        $uploadedImageNames = FilesController::uploadFilesFromRequest($request, "images", "product_images");
+        $uploadedImageNames = FilesController::uploadFilesFromRequest($request, "images", "images");
         self::saveImagesToProduct($product, $uploadedImageNames);
         
         return [
@@ -117,7 +117,7 @@ class ProductsController extends Controller
 
         if (isset($request->images)) {
             $product->deleteImages();
-            $uploadedImageNames = FilesController::uploadFilesFromRequest($request, "images", "product_images");
+            $uploadedImageNames = FilesController::uploadFilesFromRequest($request, "images", "images");
             self::saveImagesToProduct($product, $uploadedImageNames);
         }
         
